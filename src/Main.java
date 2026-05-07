@@ -1,7 +1,8 @@
+package src;
+
 public class Main {
-    
+    public static void main(String[] args)
+    {
+        System.out.println("EvanIsACoder");
+    }
 }
-
-
-
-Evan is a coder
