@@ -1,7 +1,8 @@
 package src;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 
 public class PongGame extends JPanel implements ActionListener, KeyListener {
     // Game Constants
@@ -118,7 +119,7 @@ public class PongGame extends JPanel implements ActionListener, KeyListener {
         PongGame game = new PongGame();
         frame.add(game);
         frame.pack();
-        //frame.setDefaultCloseOperation(JFrame.EXIT_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
