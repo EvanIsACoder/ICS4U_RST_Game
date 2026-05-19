@@ -24,15 +24,24 @@ public class Box {
         y += yVelocity;
 
         // Window edge collision boundaries
-        if (x < 0) x = 0;
-        if (x > panelWidth - size) x = panelWidth - size;
+        if (x < 0)
+        {
+            x = 0;
+        }
+
+        if (x > panelWidth - size)
+        {
+            x = panelWidth - size;
+        }
 
         // Ground collision detection
-        if (y + size >= groundY) {
+        if (y + size >= groundY)
+        {
             y = groundY - size; 
             yVelocity = 0;             
             isGrounded = true;         
-        } else {
+        } else 
+        {
             isGrounded = false;
         }
     }
@@ -65,7 +74,6 @@ public class Box {
         }
     }
 
-    //Testing
     public void jumpCancel() {
         if (!isGrounded) {
             yVelocity = -JUMP_STRENGTH;

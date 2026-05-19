@@ -10,21 +10,23 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
+    //Variables for the game background
     private static final int WIDTH = 800;
     private static final int HEIGHT = 400;
     private static final int GROUND_Y = 350;
 
-    // 1. Declare two separate player box objects
+    //Creates two separate player box objects
     private final Box player1;
     private final Box player2;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.CYAN);
+        setBackground(Color.BLACK);
         setFocusable(true); 
+
         addKeyListener(this);
 
-        // 2. Instantiate both players
+        //Instantiates both players
         player1 = new Box(); 
         player2 = new Box(); // Note: They will overlap at spawn (X=100) initially
         
@@ -38,15 +40,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(g);
 
         // Draw Environment Floor
-        g.setColor(new Color(139, 69, 19)); 
+        g.setColor(new Color(19, 19, 19));
         g.fillRect(0, GROUND_Y, getWidth(), HEIGHT - GROUND_Y);
 
         // 3. Render both distinct objects
+        //player1.draw(g);
+
         player1.draw(g);
-        
-        // Optional: Temporarily change graphics color context to differentiate Player 2
-        g.setColor(Color.BLUE); 
-        player2.draw(g); 
+        player2.draw(g);
     }
 
     @Override
