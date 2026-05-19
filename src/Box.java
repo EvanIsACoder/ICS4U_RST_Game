@@ -15,6 +15,18 @@ public class Box {
     private final int MOVE_SPEED = 5;
     private boolean isGrounded = false;
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
     public void update(int panelWidth, int groundY) {
         // Horizontal movement
         x += xVelocity;
