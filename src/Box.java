@@ -5,7 +5,7 @@ import java.awt.Graphics;
 public class Box {
     private int x = 100;
     private int y = 100;
-    private final int size = 30;
+    private final int size = 100;
 
     private int xVelocity = 0;
     private double yVelocity = 0;
