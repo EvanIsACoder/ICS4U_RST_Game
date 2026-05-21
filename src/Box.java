@@ -5,7 +5,7 @@ import java.awt.Graphics;
 public class Box {
     private int x = 100;
     private int y = 100;
-    private final int size = 30;
+    private final int size = 100;
 
     private int xVelocity = 0;
     private double yVelocity = 0;
@@ -14,6 +14,22 @@ public class Box {
     private final double JUMP_STRENGTH = -15.0;
     private final int MOVE_SPEED = 5;
     private boolean isGrounded = false;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int newX) {
+        x = newX;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getSize() {
+        return size;
+    }
 
     public void update(int panelWidth, int groundY) {
         // Horizontal movement
