@@ -15,10 +15,11 @@ public class Box {
     private final int MOVE_SPEED = 5;
     private boolean isGrounded = false;
 
+    //add getters and setters for x and y velocity
     public int getX() {
         return x;
     }
-    
+
     public void setX(int newX) {
         x = newX;
     }
@@ -29,6 +30,11 @@ public class Box {
 
     public int getSize() {
         return size;
+    }
+
+    public boolean getIsGrounded ()
+    {
+        return isGrounded;
     }
 
     public void update(int panelWidth, int groundY) {

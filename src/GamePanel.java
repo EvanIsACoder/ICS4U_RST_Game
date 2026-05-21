@@ -15,6 +15,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Box player2;
    private final DrawingManager drawingManager;
 
+   public int imageNum; //
+
    public GamePanel() {
         this.setPreferredSize(new Dimension(800, 400));
         this.setBackground(Color.BLACK);
@@ -34,8 +36,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(var1);
         var1.setColor(new Color(19, 19, 19));
         var1.fillRect(0, 350, this.getWidth(), 50);
-        this.drawingManager.drawPlayer1(var1, this.player1);
-        this.drawingManager.drawPlayer2(var1, this.player2);
+        this.drawingManager.drawPlayer1(var1, this.player1, imageNum);
+        this.drawingManager.drawPlayer2(var1, this.player2, imageNum);
    }
 
    @Override
@@ -48,35 +50,54 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    @Override
    public void keyPressed(KeyEvent var1) {
       int var2 = var1.getKeyCode();
-      if (var2 == 65) { 
+      
+      //Player 1
+      if (var2 == 65) {
+            imageNum = 2; 
             this.player1.setLeftVelocity();
       }
 
-      if (var2 == 68) { 
+      if (var2 == 68) {
+            imageNum = 3; 
             this.player1.setRightVelocity();
       }
 
       if (var2 == 87) { 
+            imageNum = 4; 
             this.player1.jump();
       }
 
-      if (var2 == 83) { 
+      if (var2 == 83) {
+            imageNum = 1; 
             this.player1.jumpCancel();
       }
+      /*test dash
+      if (var2 == 82) {
+            imageNum = 3;
+            if (player1.) {
+                
+            }
+            player1.setX(player1.getX() + 100);
+      }*/
 
+      //Player 2
       if (var2 == 37) { 
+            imageNum = 1; 
             this.player2.setLeftVelocity();
       }
 
       if (var2 == 39) { 
+            imageNum = 1; 
             this.player2.setRightVelocity();
       }
 
       if (var2 == 38) {
+            imageNum = 1; 
             this.player2.jump();
       }
 
       if (var2 == 40) {
+            imageNum = 1; 
             this.player2.jumpCancel();
       }
 
