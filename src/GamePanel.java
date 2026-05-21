@@ -83,7 +83,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    }
 
    @Override
-   public void keyReleased(KeyEvent var1) {
+   public void keyReleased(KeyEvent var1) 
+   {
       int var2 = var1.getKeyCode();
       if (var2 == 65) {
             this.player1.stopLeftVelocity();
@@ -100,8 +101,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       if (var2 == 39) {
             this.player2.stopRightVelocity();
       }
-
-   }
+    }
 
    @Override
    public void keyTyped(KeyEvent var1) 

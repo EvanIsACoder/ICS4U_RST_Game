@@ -43,6 +43,7 @@ public class DrawingManager {
         }
 
         BufferedImage image = (playerNumber == 2) ? player2Base : player1Base;
+
         if (image != null) {
             g.drawImage(image, player.getX(), player.getY(), player.getSize(), player.getSize(), null);
         } else {
