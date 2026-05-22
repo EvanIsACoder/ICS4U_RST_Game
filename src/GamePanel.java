@@ -15,7 +15,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Box player2;
    private final DrawingManager drawingManager;
 
-   public int imageNum; //
+   public int imageNum1;
+   public int imageNum2;
+
+   public int p1DashCD = 0;
+   public int p2DashCD = 0;
 
    public GamePanel() {
         this.setPreferredSize(new Dimension(800, 400));
@@ -36,12 +40,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(var1);
         var1.setColor(new Color(19, 19, 19));
         var1.fillRect(0, 350, this.getWidth(), 50);
-        this.drawingManager.drawPlayer1(var1, this.player1, imageNum);
-        this.drawingManager.drawPlayer2(var1, this.player2, imageNum);
+        this.drawingManager.drawPlayer1(var1, this.player1, imageNum1);
+        this.drawingManager.drawPlayer2(var1, this.player2, imageNum2);
    }
 
    @Override
    public void actionPerformed(ActionEvent var1) {
+      p1DashCD--;
+      p2DashCD--;
+
         this.player1.update(this.getWidth(), 350);
         this.player2.update(this.getWidth(), 350);
         this.repaint();
@@ -53,52 +60,66 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       
       //Player 1
       if (var2 == 65) {
-            imageNum = 2; 
+            imageNum1 = 2; 
             this.player1.setLeftVelocity();
       }
 
       if (var2 == 68) {
-            imageNum = 3; 
+            imageNum1 = 3; 
             this.player1.setRightVelocity();
       }
 
       if (var2 == 87) { 
-            imageNum = 4; 
+            imageNum1 = 4; 
             this.player1.jump();
       }
 
       if (var2 == 83) {
-            imageNum = 1; 
+            imageNum1 = 1; 
             this.player1.jumpCancel();
       }
-      /*test dash
-      if (var2 == 82) {
-            imageNum = 3;
-            if (player1.) {
-                
+      
+      if (var2 == 82 && p1DashCD <= 0) {
+            if (player1.getXVelocity() > 0) {
+                player1.setX(player1.getX() + 100);
+            } else if (player1.getXVelocity() < 0) {
+                  player1.setX(player1.getX() - 100);
+            } else if (player1.getYVelocity() < 0) {
+                  player1.setY(player1.getY() - 100);
             }
-            player1.setX(player1.getX() + 100);
-      }*/
+            p1DashCD = 16; 
+      }
 
       //Player 2
       if (var2 == 37) { 
-            imageNum = 1; 
+            imageNum2 = 2; 
             this.player2.setLeftVelocity();
       }
 
       if (var2 == 39) { 
-            imageNum = 1; 
+            imageNum2 = 3;
             this.player2.setRightVelocity();
       }
 
       if (var2 == 38) {
-            imageNum = 1; 
+            imageNum2 = 4; 
             this.player2.jump();
       }
 
       if (var2 == 40) {
-            imageNum = 1; 
+            imageNum2 = 1; 
             this.player2.jumpCancel();
+      }
+
+      if (var2 == 80 && p2DashCD <= 0) {
+            if (player2.getXVelocity() > 0) {
+                player2.setX(player2.getX() + 100);
+            } else if (player2.getXVelocity() < 0) {
+                  player2.setX(player2.getX() - 100);
+            } else if (player2.getYVelocity() < 0) {
+                  player2.setY(player2.getY() - 100);
+            }
+            p2DashCD = 16; 
       }
 
    }

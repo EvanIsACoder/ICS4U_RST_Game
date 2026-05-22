@@ -11,11 +11,18 @@ public class Box {
     private double yVelocity = 0;
     
     private final double GRAVITY = 1.0;
-    private final double JUMP_STRENGTH = -15.0;
+    private double JUMP_STRENGTH = -15.0;
     private final int MOVE_SPEED = 5;
     private boolean isGrounded = false;
 
-    //add getters and setters for x and y velocity
+    public int getXVelocity() {
+        return xVelocity;
+    }
+
+    public double getYVelocity() {
+        return yVelocity;
+    }
+
     public int getX() {
         return x;
     }
@@ -26,6 +33,10 @@ public class Box {
 
     public int getY() {
         return y;
+    }
+
+    public void setY(int newY) {
+        y = newY;
     }
 
     public int getSize() {
@@ -66,6 +77,15 @@ public class Box {
         {
             isGrounded = false;
         }
+
+        //Height limiter
+        if (y < 100)
+            {
+                JUMP_STRENGTH = 0.0;
+            } else
+            {
+                JUMP_STRENGTH = -15.0;
+            }
     }
 
     public void draw(Graphics g) {

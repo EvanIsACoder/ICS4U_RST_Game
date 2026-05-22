@@ -33,15 +33,15 @@ public class DrawingManager {
         }
     }
 
-    public void drawPlayer1(Graphics g, Box player, int imageNum) {
-        drawPlayer(g, player, 1, imageNum);
+    public void drawPlayer1(Graphics g, Box player, int imageNum1) {
+        drawPlayer(g, player, 1, imageNum1);
     }
 
-    public void drawPlayer2(Graphics g, Box player, int imageNum) {
-        drawPlayer(g, player, 2, imageNum);
+    public void drawPlayer2(Graphics g, Box player, int imageNum2) {
+        drawPlayer(g, player, 2, imageNum2);
     }
 
-    public void drawPlayer(Graphics g, Box player, int playerNumber, int imageNum) {
+    public void drawPlayer(Graphics g, Box player, int playerNumber, int imageNum) { //
         if (player == null) {
             return;
         }
@@ -62,12 +62,20 @@ public class DrawingManager {
             {
                 image = player1Up;
             }
-        } else
-        {
+        } else if (playerNumber == 2) {
             if (imageNum == 1) 
             {
                 image = player2Base;
-            }
+            } else if (imageNum == 2) 
+                {
+                    image = player1Left;
+                } else if (imageNum == 3) 
+                {
+                    image = player1Right;
+                } else if (imageNum == 4) 
+                {
+                    image = player1Up;
+                }
         }
 
         if (image != null) {
