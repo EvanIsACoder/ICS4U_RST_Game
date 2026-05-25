@@ -3,16 +3,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Box {
-    private int x = 100;
-    private int y = 100;
-    private final int size = 100;
+    private int x = 250;
+    private int y = 250;
+    private int height = 250;
+    private int length = 250;
 
     private int xVelocity = 0;
     private double yVelocity = 0;
     
-    private final double GRAVITY = 1.0;
-    private double JUMP_STRENGTH = -15.0;
-    private final int MOVE_SPEED = 5;
+    private final double GRAVITY = 1.3;
+    private double JUMP_STRENGTH = -30.0;
+    private final int MOVE_SPEED = 10;
     private boolean isGrounded = false;
 
     public int getXVelocity() {
@@ -39,8 +40,20 @@ public class Box {
         y = newY;
     }
 
-    public int getSize() {
-        return size;
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int newHeight) {
+        height = newHeight;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int newLength) {
+        length = newLength;
     }
 
     public boolean getIsGrounded ()
@@ -62,15 +75,15 @@ public class Box {
             x = 0;
         }
 
-        if (x > panelWidth - size)
+        if (x > panelWidth - length)
         {
-            x = panelWidth - size;
+            x = panelWidth - length;
         }
 
         // Ground collision detection
-        if (y + size >= groundY)
+        if (y + height >= groundY)
         {
-            y = groundY - size; 
+            y = groundY - height; 
             yVelocity = 0;             
             isGrounded = true;         
         } else 
@@ -79,18 +92,18 @@ public class Box {
         }
 
         //Height limiter
-        if (y < 100)
+        if (y < 300)
             {
                 JUMP_STRENGTH = 0.0;
             } else
             {
-                JUMP_STRENGTH = -15.0;
+                JUMP_STRENGTH = -30.0;
             }
     }
 
     public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(x, y, size, size);
+        g.fillRect(x, y, length, height);
     }
 
     public void setLeftVelocity() {

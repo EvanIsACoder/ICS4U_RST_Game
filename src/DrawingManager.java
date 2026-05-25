@@ -13,6 +13,9 @@ public class DrawingManager {
     private BufferedImage player1Up;
 
     private BufferedImage player2Base;
+    private BufferedImage player2Left;
+    private BufferedImage player2Right;
+    private BufferedImage player2Up;
 
     public DrawingManager() {
         player1Base = loadImage("resources/images/Player_1_Xiao/XiaoBase.png");
@@ -20,7 +23,10 @@ public class DrawingManager {
         player1Right = loadImage("resources/images/Player_1_Xiao/XiaoRight.png");
         player1Up = loadImage("resources/images/Player_1_Xiao/XiaoUp.png");
 
-        player2Base = loadImage("resources/images/Player_2_Roland/邵EGO蒲牢鳴锺1SD.png");
+        player2Base = loadImage("resources/images/Player_2_Roland/RolandBase.png");
+        player2Left = loadImage("resources/images/Player_2_Roland/RolandLeft.png");
+        player2Right = loadImage("resources/images/Player_2_Roland/RolandRight.png");
+        player2Up = loadImage("resources/images/Player_2_Roland/RolandUp.png");
     }
 
     private BufferedImage loadImage(String path) {
@@ -67,19 +73,19 @@ public class DrawingManager {
             {
                 image = player2Base;
             } else if (imageNum == 2) 
-                {
-                    image = player1Left;
-                } else if (imageNum == 3) 
-                {
-                    image = player1Right;
-                } else if (imageNum == 4) 
-                {
-                    image = player1Up;
-                }
+            {
+                image = player2Left;
+            } else if (imageNum == 3) 
+            {
+                image = player2Right;
+            } else if (imageNum == 4) 
+            {
+                image = player2Up;
+            }
         }
 
         if (image != null) {
-            g.drawImage(image, player.getX(), player.getY(), player.getSize(), player.getSize(), null);
+            g.drawImage(image, player.getX(), player.getY(), player.getLength(), player.getHeight(), null);
         } else {
             player.draw(g);
         }

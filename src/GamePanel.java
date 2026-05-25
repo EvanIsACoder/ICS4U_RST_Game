@@ -22,14 +22,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public int p2DashCD = 0;
 
    public GamePanel() {
-        this.setPreferredSize(new Dimension(800, 400));
+        this.setPreferredSize(new Dimension(2550, 1350));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.addKeyListener(this);
         this.player1 = new Box();
         player1.setX(150);
         this.player2 = new Box();
-        player2.setX(550);
+        player2.setX(2150);
         this.drawingManager = new DrawingManager();
         Timer var1 = new Timer(16, this);
         var1.start();
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    protected void paintComponent(Graphics var1) {
         super.paintComponent(var1);
         var1.setColor(new Color(19, 19, 19));
-        var1.fillRect(0, 350, this.getWidth(), 50);
+        var1.fillRect(0, 1200, this.getWidth(), 200);
         this.drawingManager.drawPlayer1(var1, this.player1, imageNum1);
         this.drawingManager.drawPlayer2(var1, this.player2, imageNum2);
    }
@@ -48,10 +48,37 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public void actionPerformed(ActionEvent var1) {
       p1DashCD--;
       p2DashCD--;
+      this.player1.update(this.getWidth(), 1200);
+      this.player2.update(this.getWidth(), 1200);
 
-        this.player1.update(this.getWidth(), 350);
-        this.player2.update(this.getWidth(), 350);
-        this.repaint();
+      if (player1.getXVelocity() == 0 && player1.getYVelocity() == 0)
+      {
+            imageNum1 = 1;
+      }
+      if (player2.getXVelocity() == 0 && player2.getYVelocity() == 0)
+      {
+            imageNum2 = 1;
+      }
+
+      if (imageNum1 == 1 || imageNum1 == 4)
+      {
+            player1.setHeight(450); 
+            player1.setLength(500);  
+      } else 
+      {
+            player1.setLength(250);
+            player1.setLength(250);
+      }
+      
+      if (imageNum2 == 1)
+      {
+            player2.setLength(100);   
+      } else 
+      {
+            player2.setLength(250);
+      }
+
+      this.repaint();
    }
 
    @Override
@@ -113,11 +140,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
       if (var2 == 80 && p2DashCD <= 0) {
             if (player2.getXVelocity() > 0) {
-                player2.setX(player2.getX() + 100);
+                player2.setX(player2.getX() + 300);
             } else if (player2.getXVelocity() < 0) {
-                  player2.setX(player2.getX() - 100);
+                  player2.setX(player2.getX() - 300);
             } else if (player2.getYVelocity() < 0) {
-                  player2.setY(player2.getY() - 100);
+                  player2.setY(player2.getY() - 300);
             }
             p2DashCD = 16; 
       }
