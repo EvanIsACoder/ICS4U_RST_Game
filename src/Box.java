@@ -13,7 +13,7 @@ public class Box {
     
     private final double GRAVITY = 1.3;
     private double JUMP_STRENGTH = -30.0;
-    private final int MOVE_SPEED = 10;
+    private int MOVE_SPEED = 15;
     private boolean isGrounded = false;
 
     public int getXVelocity() {
@@ -60,6 +60,18 @@ public class Box {
     {
         return isGrounded;
     }
+
+    public int getSpeed ()
+    {
+        return MOVE_SPEED;
+    }
+
+    public void setSpeed (int newSpeed)
+    {
+        MOVE_SPEED = newSpeed;
+    }
+
+
 
     public void update(int panelWidth, int groundY) {
         // Horizontal movement

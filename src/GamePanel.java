@@ -13,6 +13,8 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Box player1;
    private final Box player2;
+   private final Attack attackP1;
+   private final Attack attackP2;
    private final DrawingManager drawingManager;
 
    public int imageNum1;
@@ -24,12 +26,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public GamePanel() {
         this.setPreferredSize(new Dimension(2550, 1350));
         this.setBackground(Color.BLACK);
-        this.setFocusable(true);
+        this.setFocusable(true);dww
         this.addKeyListener(this);
         this.player1 = new Box();
+        this.attackP1 = new Attack();
         player1.setX(150);
         this.player2 = new Box();
+        this.attackP2 = new Attack();
         player2.setX(2150);
+        player2.setSpeed(20);
         this.drawingManager = new DrawingManager();
         Timer var1 = new Timer(16, this);
         var1.start();
@@ -62,8 +67,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
       if (imageNum1 == 1 || imageNum1 == 4)
       {
-            player1.setHeight(450); 
+            player1.setHeight(460); 
             player1.setLength(500);  
+      } else if (imageNum1 == 2 || imageNum1 == 3)
+      {
+            player1.setLength(500);
       } else 
       {
             player1.setLength(250);
@@ -108,14 +116,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       
       if (var2 == 82 && p1DashCD <= 0) {
             if (player1.getXVelocity() > 0) {
-                player1.setX(player1.getX() + 100);
+                player1.setX(player1.getX() + 500);
             } else if (player1.getXVelocity() < 0) {
-                  player1.setX(player1.getX() - 100);
+                  player1.setX(player1.getX() - 500);
             } else if (player1.getYVelocity() < 0) {
-                  player1.setY(player1.getY() - 100);
+                  player1.setY(player1.getY() - 400);
             }
-            p1DashCD = 16; 
+            p1DashCD = 32; 
       }
+
+      /*  testing to draw attack
+      if (var2 == 84) {
+            this.drawingManager.drawPlayer1(var1, this.player1, imageNum1);
+      }*/
 
       //Player 2
       if (var2 == 37) { 
