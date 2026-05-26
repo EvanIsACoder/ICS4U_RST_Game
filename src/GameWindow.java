@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 public class GameWindow extends JFrame {
    public GameWindow() {
-        this.setTitle("Controllable Box with Gravity");
+        this.setTitle("2-player fighting game");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         GamePanel var1 = new GamePanel();
         this.add(var1);

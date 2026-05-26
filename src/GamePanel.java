@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import java.awt.Toolkit;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Box player1;
@@ -17,16 +18,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Attack attackP2;
    private final DrawingManager drawingManager;
 
+    // Get the default screen toolkit
+      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+      public int panelWidth = screenSize.width;
+      public int panelHeight = screenSize.height;
+
    public int imageNum1;
    public int imageNum2;
+   public int attackNum1;
+   public int attackNum2;
 
    public int p1DashCD = 0;
    public int p2DashCD = 0;
 
    public GamePanel() {
-        this.setPreferredSize(new Dimension(2550, 1350));
+        this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setBackground(Color.BLACK);
-        this.setFocusable(true);dww
+        this.setFocusable(true);
         this.addKeyListener(this);
         this.player1 = new Box();
         this.attackP1 = new Attack();
@@ -44,17 +52,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    protected void paintComponent(Graphics var1) {
         super.paintComponent(var1);
         var1.setColor(new Color(19, 19, 19));
-        var1.fillRect(0, 1200, this.getWidth(), 200);
+        var1.fillRect(0, panelHeight - 200, this.getWidth(), 200);
         this.drawingManager.drawPlayer1(var1, this.player1, imageNum1);
         this.drawingManager.drawPlayer2(var1, this.player2, imageNum2);
+        this.drawingManager.drawAttack1(var1, this.attackP1, attackNum1);
+        //this.drawingManager.drawAttack2(var1, this.attackP2, attackNum2);
    }
 
    @Override
    public void actionPerformed(ActionEvent var1) {
       p1DashCD--;
       p2DashCD--;
-      this.player1.update(this.getWidth(), 1200);
-      this.player2.update(this.getWidth(), 1200);
+      this.player1.update(this.getWidth(), panelHeight, panelHeight - 200);
+      this.player2.update(this.getWidth(), panelHeight, panelHeight - 200);
 
       if (player1.getXVelocity() == 0 && player1.getYVelocity() == 0)
       {
@@ -125,10 +135,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             p1DashCD = 32; 
       }
 
-      /*  testing to draw attack
+      //  testing to draw attack
       if (var2 == 84) {
-            this.drawingManager.drawPlayer1(var1, this.player1, imageNum1);
-      }*/
+            attackNum1 = 1;
+      }
 
       //Player 2
       if (var2 == 37) { 
@@ -182,6 +192,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
       if (var2 == 39) {
             this.player2.stopRightVelocity();
+      }
+
+      // testing to stop drawing attack
+      if (var2 == 84) {
+            attackNum1 = 0;
       }
     }
 

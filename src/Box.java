@@ -71,9 +71,7 @@ public class Box {
         MOVE_SPEED = newSpeed;
     }
 
-
-
-    public void update(int panelWidth, int groundY) {
+    public void update(int panelWidth, int panelHeight, int groundY) {
         // Horizontal movement
         x += xVelocity;
 
@@ -104,7 +102,7 @@ public class Box {
         }
 
         //Height limiter
-        if (y < 300)
+        if (y < panelHeight*0.3)
             {
                 JUMP_STRENGTH = 0.0;
             } else

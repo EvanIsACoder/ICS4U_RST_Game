@@ -40,8 +40,8 @@ public class Attack {
         attackLength = newLength;
     }
 
-    public void drawAttack(Graphics g) {
+    public void draw(Graphics g) {
         g.setColor(Color.RED);
-        g.fillRect(attackX, attackX, attackLength, attackHeight);
+        g.fillRect(attackX, attackY, attackLength, attackHeight);
     }
 }
