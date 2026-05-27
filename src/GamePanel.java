@@ -3,13 +3,13 @@ package src;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.awt.Toolkit;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Box player1;
@@ -30,6 +30,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
    public int p1DashCD = 0;
    public int p2DashCD = 0;
+
+   public int fireballLife = 0;
+   public int fireballCD = 0;
 
    public GamePanel() {
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
@@ -63,6 +66,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public void actionPerformed(ActionEvent var1) {
       p1DashCD--;
       p2DashCD--;
+      fireballLife--;
+      fireballCD--''
+
+      if (fireballLife == 0) {
+          fireballCD = 32;
+      }
+
       this.player1.update(this.getWidth(), panelHeight, panelHeight - 200);
       this.player2.update(this.getWidth(), panelHeight, panelHeight - 200);
 
@@ -75,6 +85,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             imageNum2 = 1;
       }
 
+      if (attackNum1 == 1) {
+          imageNum1 = 5;
+      }
+
       if (imageNum1 == 1 || imageNum1 == 4)
       {
             player1.setHeight(460); 
@@ -82,7 +96,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       } else if (imageNum1 == 2 || imageNum1 == 3)
       {
             player1.setLength(500);
-      } else 
+      } else if (imageNum1 == 5) {
+            player1.setLength(700);
+      } else
       {
             player1.setLength(250);
             player1.setLength(250);
@@ -94,6 +110,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       } else 
       {
             player2.setLength(250);
+      }
+
+      if (fireballLife > 0) {
+          attackP1.setAttackX(attackP1.getAttackX() - 50);
       }
 
       this.repaint();
@@ -136,8 +156,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       }
 
       //  testing to draw attack
-      if (var2 == 84) {
-            attackNum1 = 1;
+      if (var2 == 84 && fireballCD == 0) {
+            if (player1.getXVelocity() < 0)
+            {
+                  attackNum1 = 1;
+                  fireballLife = 48;
+                  attackP1.setAttackY(player1.getY());
+                  attackP1.setAttackX(player1.getX() - 500);
+                  player1.setXVelocity(0);
+                  player1.setYVelocity(0);
+            }
       }
 
       //Player 2

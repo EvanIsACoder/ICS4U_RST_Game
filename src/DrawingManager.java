@@ -11,7 +11,7 @@ public class DrawingManager {
     private BufferedImage player1Left;
     private BufferedImage player1Right;
     private BufferedImage player1Up;
-    private BufferedImage p1Attack1;
+    private BufferedImage p1Attack1Left;
 
     private BufferedImage player2Base;
     private BufferedImage player2Left;
@@ -20,13 +20,14 @@ public class DrawingManager {
     private BufferedImage p2Attack1;
 
     private BufferedImage noAttack;
+    private BufferedImage fireball;
 
     public DrawingManager() {
         player1Base = loadImage("resources/images/Player_1_Xiao/XiaoBase.png");
         player1Left = loadImage("resources/images/Player_1_Xiao/XiaoLeft.png");
         player1Right = loadImage("resources/images/Player_1_Xiao/XiaoRight.png");
         player1Up = loadImage("resources/images/Player_1_Xiao/XiaoUp.png");
-        p1Attack1 = loadImage("resources/images/Player_1_Xiao/XiaoAttack1.png");
+        p1Attack1Left = loadImage("resources/images/Player_1_Xiao/XiaoAttack1Left.png");
 
         player2Base = loadImage("resources/images/Player_2_Roland/RolandBase.png");
         player2Left = loadImage("resources/images/Player_2_Roland/RolandLeft.png");
@@ -35,6 +36,7 @@ public class DrawingManager {
         //p2Attack1 = loadImage("resources/images/Player_2_Roland/RolandAttack1.png");
 
         noAttack = loadImage("resources/images/NoAttack.png");
+        fireball = loadImage("resources/images/fireball.png");
     }
 
     private BufferedImage loadImage(String path) {
@@ -83,6 +85,9 @@ public class DrawingManager {
             } else if (imageNum == 4) 
             {
                 image = player1Up;
+            } else if (imageNum == 5)
+            {
+                image = p1Attack1Left;
             }
         } else if (playerNumber == 2) {
             if (imageNum == 1) 
@@ -118,7 +123,7 @@ public class DrawingManager {
         {
             if (attackNum == 1) 
             {
-                image = p1Attack1;
+                image = fireball;
             }
         } /*else if (playerNumber == 2) 
          {

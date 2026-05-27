@@ -5,8 +5,8 @@ import java.awt.Graphics;
 public class Attack {
     private int attackX = 250;
     private int attackY = 250;
-    private int attackHeight = 250;
-    private int attackLength = 250;
+    private int attackHeight = 500;
+    private int attackLength = 850;
 
     public int getAttackX() {
         return attackX;

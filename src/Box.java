@@ -20,9 +20,17 @@ public class Box {
         return xVelocity;
     }
 
+    public void setXVelocity(int xVelocity) {
+        this.xVelocity = xVelocity;
+    }    
+
     public double getYVelocity() {
         return yVelocity;
     }
+
+    public void setYVelocity(int yVelocity) {
+        this.yVelocity = yVelocity;
+    }   
 
     public int getX() {
         return x;
