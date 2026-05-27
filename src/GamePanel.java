@@ -31,7 +31,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public int p1DashCD = 0;
    public int p2DashCD = 0;
 
-   public int fireballLife = 0;
    public int fireballCD = 0;
 
    public GamePanel() {
@@ -66,12 +65,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public void actionPerformed(ActionEvent var1) {
       p1DashCD--;
       p2DashCD--;
-      fireballLife--;
-      fireballCD--''
-
-      if (fireballLife == 0) {
-          fireballCD = 32;
-      }
+      fireballCD--;
 
       this.player1.update(this.getWidth(), panelHeight, panelHeight - 200);
       this.player2.update(this.getWidth(), panelHeight, panelHeight - 200);
@@ -112,7 +106,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             player2.setLength(250);
       }
 
-      if (fireballLife > 0) {
+      if (fireballCD> 0) {
           attackP1.setAttackX(attackP1.getAttackX() - 50);
       }
 
@@ -156,11 +150,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       }
 
       //  testing to draw attack
-      if (var2 == 84 && fireballCD == 0) {
+      if (var2 == 84 && fireballCD <= 0) {
             if (player1.getXVelocity() < 0)
             {
                   attackNum1 = 1;
-                  fireballLife = 48;
+                  fireballCD = 48;
                   attackP1.setAttackY(player1.getY());
                   attackP1.setAttackX(player1.getX() - 500);
                   player1.setXVelocity(0);
