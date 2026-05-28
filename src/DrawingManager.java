@@ -7,11 +7,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class DrawingManager {
-    private BufferedImage player1Base;
+    private BufferedImage player1BaseLeft;
+    private BufferedImage player1BaseRight;
     private BufferedImage player1Left;
     private BufferedImage player1Right;
     private BufferedImage player1Up;
     private BufferedImage p1Attack1Left;
+    private BufferedImage p1Attack1Right;
+    private BufferedImage fireballLeft;
+    private BufferedImage fireballRight;
 
     private BufferedImage player2Base;
     private BufferedImage player2Left;
@@ -20,14 +24,17 @@ public class DrawingManager {
     private BufferedImage p2Attack1;
 
     private BufferedImage noAttack;
-    private BufferedImage fireball;
 
     public DrawingManager() {
-        player1Base = loadImage("resources/images/Player_1_Xiao/XiaoBase.png");
+        player1BaseLeft = loadImage("resources/images/Player_1_Xiao/XiaoBaseLeft.png");
+        player1BaseRight = loadImage("resources/images/Player_1_Xiao/XiaoBaseRight.png");
         player1Left = loadImage("resources/images/Player_1_Xiao/XiaoLeft.png");
         player1Right = loadImage("resources/images/Player_1_Xiao/XiaoRight.png");
         player1Up = loadImage("resources/images/Player_1_Xiao/XiaoUp.png");
         p1Attack1Left = loadImage("resources/images/Player_1_Xiao/XiaoAttack1Left.png");
+        p1Attack1Right = loadImage("resources/images/Player_1_Xiao/XiaoAttack1Right.png");
+        fireballLeft = loadImage("resources/images/Player_1_Xiao/fireballLeft.png");
+        fireballRight = loadImage("resources/images/Player_1_Xiao/fireballRight.png");
 
         player2Base = loadImage("resources/images/Player_2_Roland/RolandBase.png");
         player2Left = loadImage("resources/images/Player_2_Roland/RolandLeft.png");
@@ -36,7 +43,6 @@ public class DrawingManager {
         //p2Attack1 = loadImage("resources/images/Player_2_Roland/RolandAttack1.png");
 
         noAttack = loadImage("resources/images/NoAttack.png");
-        fireball = loadImage("resources/images/fireball.png");
     }
 
     private BufferedImage loadImage(String path) {
@@ -70,12 +76,15 @@ public class DrawingManager {
             return;
         }
 
-        BufferedImage image = (playerNumber == 2) ? player2Base : player1Base; //Keeps the base form if no other form is needed
+        BufferedImage image = (playerNumber == 2) ? player2Base : player1BaseLeft; //Keeps the base form if no other form is needed
         
         if (playerNumber == 1) {
-            if (imageNum == 1) 
+            if (imageNum == 0)
             {
-                image = player1Base;
+                image = player1BaseLeft;
+            }else if (imageNum == 1) 
+            {
+                image = player1BaseRight;
             } else if (imageNum == 2) 
             {
                 image = player1Left;
@@ -88,6 +97,9 @@ public class DrawingManager {
             } else if (imageNum == 5)
             {
                 image = p1Attack1Left;
+            } else if (imageNum == 6)
+            {
+                image = p1Attack1Right;
             }
         } else if (playerNumber == 2) {
             if (imageNum == 1) 
@@ -123,7 +135,10 @@ public class DrawingManager {
         {
             if (attackNum == 1) 
             {
-                image = fireball;
+                image = fireballLeft;
+            } else if (attackNum == 2)
+            {
+                image = fireballRight;
             }
         } /*else if (playerNumber == 2) 
          {
