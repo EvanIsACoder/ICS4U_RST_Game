@@ -176,23 +176,21 @@ public class DrawingManager {
 
         BufferedImage image = noAttack; //Default to no attack image
 
-        /*
+        
         if (playerNumber == 1) 
         {
             if (attackNum == 1) 
             {
-                image = fireballLeft;
+                image = fireSpearLeft;
             } else if (attackNum == 2)
             {
-                image = fireballRight;
+                image = fireSpearRight;
             }
         } else if (playerNumber == 2) 
          {
-             if (attackNum == 1) 
-            {
-                 image = p2Attack1;
-            }
-        }*/
+            
+        }
+       
 
             if (attackNum == 0)
             {
@@ -204,3 +202,132 @@ public class DrawingManager {
         }
     }
 }
+/*
+package src;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+public class DrawingManager {
+    private BufferedImage player1BaseLeft, player1BaseRight, player1Left, player1Right, player1UpRight;
+    private BufferedImage p1Attack1Left, p1Attack1Right, player2BaseLeft, player2BaseRight;
+    private BufferedImage player2Left, player2Right, player2UpRight, noAttack;
+
+    public DrawingManager() {
+        // Load all sprites securely
+        player1BaseLeft  = loadImage("resources/images/Player_1_Xiao/xiaoBaseLeft.png");
+        player1BaseRight = loadImage("resources/images/Player_1_Xiao/xiaoBaseRight(1).png");
+        player1Left      = loadImage("resources/images/Player_1_Xiao/xiaoDashLeft.png");
+        player1Right     = loadImage("resources/images/Player_1_Xiao/xiaoDashRight.png");
+        player1UpRight   = loadImage("resources/images/Player_1_Xiao/xiaoUpRight.png");
+        p1Attack1Left    = loadImage("resources/images/Player_1_Xiao/xiaoFugaLeft.png");
+        p1Attack1Right   = loadImage("resources/images/Player_1_Xiao/xiaoFugaRight.png");
+
+        player2BaseLeft  = loadImage("resources/images/Player_2_Roland/rolandBaseLeft.png");
+        player2BaseRight = loadImage("resources/images/Player_2_Roland/rolandBaseRight.png");
+        player2Left      = loadImage("resources/images/Player_2_Roland/rolandDashLeft.png");
+        player2Right     = loadImage("resources/images/Player_2_Roland/rolandDashRight.png");
+        player2UpRight   = loadImage("resources/images/Player_2_Roland/rolandUpRight.png");
+
+        noAttack         = loadImage("resources/images/NoAttack.png");
+    }
+
+    public BufferedImage loadImage(String path) {
+        try {
+            File f = new File(path);
+            if (f.exists()) return ImageIO.read(f);
+            
+            java.net.URL url = getClass().getResource("/" + path.replace("resources/", ""));
+            if (url != null) return ImageIO.read(url);
+        } catch (Exception e) {
+            // Silently catch to prevent frame stuttering if a file is missing
+        }
+        return null;
+    }
+
+    public void drawPlayer1(Graphics g, Box player, int imageNum) {
+        drawPlayer(g, player, 1, imageNum);
+    }
+
+    public void drawPlayer2(Graphics g, Box player, int imageNum) {
+        drawPlayer(g, player, 2, imageNum);
+    }
+
+    private void drawPlayer(Graphics g, Box player, int playerNumber, int imageNum) {
+        if (player == null) return;
+
+        BufferedImage image = null;
+
+        // State machine selector
+        if (playerNumber == 1) {
+            switch (imageNum) {
+                case 0: image = player1BaseLeft; break;
+                case 1: image = player1BaseRight; break;
+                case 2: image = player1Left; break;
+                case 3: image = player1Right; break;
+                case 4: image = player1UpRight; break;
+                case 5: image = p1Attack1Left; break;
+                case 6: image = p1Attack1Right; break;
+            }
+        } else {
+            switch (imageNum) {
+                case 1: image = player2BaseRight; break;
+                case 2: image = player2Left; break;
+                case 3: image = player2Right; break;
+                case 4: image = player2UpRight; break;
+                default: image = player2BaseLeft; break;
+            }
+        }
+
+        // Fallback default assignments
+        if (image == null) {
+            image = (playerNumber == 1) ? player1BaseRight : player2BaseLeft;
+        }
+
+        if (image != null) {
+            // Respecting the Box bounding sizes while retaining aspect ratio scaling
+            drawScaledImage(g, image, player.getX(), player.getY(), player.getLength(), player.getHeight());
+        } else {
+            player.draw(g); // Draw debug red rect if image fails completely
+        }
+    }
+
+    public void drawAttack1(Graphics g, Attack attack, int attackNum) {
+        if (attack == null || attackNum == 0) return;
+        if (noAttack != null) {
+            drawScaledImage(g, noAttack, attack.getAttackX(), attack.getAttackY(), attack.getAttackLength(), attack.getAttackHeight());
+        }
+    }
+
+    /**
+     * Helper method to render an image smoothly without breaking its aspect ratio.
+     */
+    /*
+    private void drawScaledImage(Graphics g, BufferedImage img, int x, int y, int targetWidth, int targetHeight) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        
+        // Turn on bilinear filtering to prevent pixelated lag lines when resizing
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        double imgWidth = img.getWidth();
+        double imgHeight = img.getHeight();
+        
+        // Calculate the ideal width to match the aspect ratio based on target height
+        double aspect = imgWidth / imgHeight;
+        int calculatedWidth = (int) (targetHeight * aspect);
+        
+        // Center the image if the hitbox size differs significantly from the calculated aspect size
+        int finalX = x + (targetWidth - calculatedWidth) / 2;
+
+        // Draw the cleanly transformed frame
+        g2d.drawImage(img, finalX, y, calculatedWidth, targetHeight, null);
+        g2d.dispose();
+    }
+}
+*/

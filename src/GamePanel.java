@@ -177,9 +177,9 @@ private String urlAdjust(String path) {
       p2DashCD--;
       fireballCD--;
 
-      this.player1.update(this.getWidth(), panelHeight, panelHeight - 300);
+      this.player1.update(this.getWidth(), panelHeight, panelHeight - 400);
       this.player2.update(this.getWidth(), panelHeight, panelHeight - 400);
-
+/*    
       if (attackNum1 == 1) {
           imageNum1 = 5;
       } else if (attackNum1 == 2)
@@ -216,7 +216,7 @@ private String urlAdjust(String path) {
             {
                   imageNum1 = 1;
             }
-      }
+      } */
 
       if (imageNum2 == 1)
       {
