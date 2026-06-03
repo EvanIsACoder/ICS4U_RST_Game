@@ -1,15 +1,17 @@
 package src;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.*;
+import java.awt.*;
+import javax.imageio.ImageIO;
+import java.io.File;        // <--- 核心补丁：告诉 Java 什么是 File
+import java.io.IOException; // <--- 核心补丁：告诉 Java 什么是 IOException
+import java.net.URL;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Box player1;
@@ -17,6 +19,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Attack attackP1;
    private final Attack attackP2;
    private final DrawingManager drawingManager;
+
+   private Image bgWall, bgFloor, bgWall2; 
+   private Image mainCamFrame, battleFrame, lowerFrame, topFrame;
 
     // Get the default screen toolkit
       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -34,6 +39,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public int fireballCD = 0;
 
    public GamePanel() {
+        bgWall = loadImage("/images/Texture2D/Xiao_Background_Wall.png");
+        bgFloor = loadImage("/images/Texture2D/Xiao_Background_Floor.png");
+        bgWall2 = loadImage("/images/Texture2D/Xiao_Background_Wall2.png");
+        
+        mainCamFrame = loadImage("/images/Texture2D/MainCam_Frame.png");
+        battleFrame = loadImage("/images/Texture2D/frame.png");
+        lowerFrame = loadImage("/images/Texture2D/OverlayUI_LowerFrame.png");
+        topFrame = loadImage("/images/Texture2D/Base (상하조절가능).png");
+
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
@@ -50,15 +64,111 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         var1.start();
    }
 
+   private Image loadImage(String path) {
+      try {
+            // 方案 A: 尝试类路径加载
+            URL url = getClass().getResource(path);
+            if (url != null) return ImageIO.read(url);
+
+            // 方案 B: 物理路径保底 (针对并行的 resources 文件夹)
+            // 这里的 File 就需要 import java.io.File
+            File file = new File("resources" + path); 
+            if (file.exists()) {
+                  System.out.println("✅ 从物理路径抓到了图: " + path);
+                  return ImageIO.read(file);
+            } else {
+                  System.out.println("❌ 还是没找到: " + file.getAbsolutePath());
+            }
+      } catch (IOException e) { // 这里的 IOException 就需要 import java.io.IOException
+            e.printStackTrace();
+      }
+      return null;
+}
+
+/* 辅助小方法：确保路径斜杠正确
+private String urlAdjust(String path) {
+      return path.replace("\\", "/");
+  }*/
+
    @Override
    protected void paintComponent(Graphics var1) {
         super.paintComponent(var1);
-        var1.setColor(new Color(19, 19, 19));
-        var1.fillRect(0, panelHeight - 200, this.getWidth(), 200);
+      
+        int screenW = getWidth();
+        int screenH = getHeight();
+
+       // 1. Sky
+       if (bgWall != null){
+            var1.drawImage(bgWall, 0, 0, screenW, screenH, this);
+       }
+
+       // 2. Floor
+       if (bgFloor != null) {
+           double ratio = (double) screenW / bgFloor.getWidth(null);
+           int drawH = (int) (bgFloor.getHeight(null) * ratio);
+           int y = (int) (screenH * 0.004); 
+           var1.drawImage(bgFloor, 0, y, screenW, drawH, this);
+           
+           if (bgWall2 != null) {
+               double wallRatio = (double) screenW / bgWall2.getWidth(null);
+               int wallDrawH = (int) (bgWall2.getHeight(null) * wallRatio);
+               int wallY = y + (int) (drawH * 0.72); 
+               var1.drawImage(bgWall2, 0, wallY, screenW, wallDrawH, this);
+           }
+       }
+
+        //var1.setColor(new Color(19, 19, 19));
+        //var1.fillRect(0, panelHeight - 200, this.getWidth(), 200);
         this.drawingManager.drawPlayer1(var1, this.player1, imageNum1);
         this.drawingManager.drawPlayer2(var1, this.player2, imageNum2);
         this.drawingManager.drawAttack1(var1, this.attackP1, attackNum1);
         //this.drawingManager.drawAttack2(var1, this.attackP2, attackNum2);
+
+        // 3. UI 边框 (按顺序叠放)
+		if (mainCamFrame != null) {
+			// 设定你想要的缩进距离，比如四周各缩进屏幕宽度的 5%
+			// 你可以根据感觉调整这个 0.05
+			int paddingW = (int)(screenW * 0.01); 
+			int paddingH = (int)(screenH * 0.01);
+
+			// 计算实际绘制的位置和大小
+			int frameX = paddingW;
+			int frameY = paddingH;
+			int frameW = screenW - (paddingW * 2);
+			int frameH = screenH - (paddingH * 2);
+		
+			// 这样画出来的框就会往中间靠，露出外面的一圈
+			var1.drawImage(mainCamFrame, frameX, frameY, frameW, frameH, this);
+		}
+		
+        if (battleFrame != null){
+            var1.drawImage(battleFrame, 0, 0, screenW, screenH, this);
+        }
+        
+		if (lowerFrame != null) {
+		// 【1】等比例计算放大后的高度
+		// 假设我们让它稍微比屏幕宽一点点，或者就等于屏幕宽
+		double lowerRatio = (double) screenW / lowerFrame.getWidth(null);
+		int lowerDrawH = (int) (lowerFrame.getHeight(null) * lowerRatio);
+    
+		// 【2】计算 Y 坐标实现贴底
+		// 如果直接画在 0, 0，金框会在中间悬着。
+		// 我们让 y = 屏幕高度 - 图片放大后的高度
+		// 这样图片的底边就死死贴住了屏幕底边
+		int lowerY = screenH - lowerDrawH;
+
+		// 【3】如果觉得金框还是太靠上（因为原图下方有留白），可以加个“微调值”
+		// 比如 lowerY + 10 让它再往下沉一点，藏进边框里
+		var1.drawImage(lowerFrame, 0, lowerY+10, screenW, lowerDrawH, this);
+		}
+
+		if (topFrame != null) {
+			// 依然采用等比例放大，保证它铺满左右宽度
+			double topRatio = (double) screenW / topFrame.getWidth(null);
+			int topDrawH = (int) (topFrame.getHeight(null) * topRatio);
+			// 坐标 (0, 0) 就是死死贴住顶部
+			var1.drawImage(topFrame, 0, 0, screenW, topDrawH, this);
+		}
    }
 
    @Override
@@ -67,8 +177,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       p2DashCD--;
       fireballCD--;
 
-      this.player1.update(this.getWidth(), panelHeight, panelHeight - 200);
-      this.player2.update(this.getWidth(), panelHeight, panelHeight - 200);
+      this.player1.update(this.getWidth(), panelHeight, panelHeight - 300);
+      this.player2.update(this.getWidth(), panelHeight, panelHeight - 400);
 
       if (attackNum1 == 1) {
           imageNum1 = 5;
@@ -93,7 +203,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
       } else
       {
             player1.setLength(250);
-            player1.setLength(250);
+            player1.setHeight(250);
       }
       
 

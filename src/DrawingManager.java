@@ -11,36 +11,81 @@ public class DrawingManager {
     private BufferedImage player1BaseRight;
     private BufferedImage player1Left;
     private BufferedImage player1Right;
-    private BufferedImage player1Up;
+    private BufferedImage player1UpLeft;
+    private BufferedImage player1UpRight;
     private BufferedImage p1Attack1Left;
     private BufferedImage p1Attack1Right;
-    private BufferedImage fireballLeft;
-    private BufferedImage fireballRight;
+    private BufferedImage fireSpearLeft;
+    private BufferedImage fireSpearRight;
+    private BufferedImage p1Attack2Left;
+    private BufferedImage p1Attack2Right;
+    private BufferedImage fireSpinLeft;
+    private BufferedImage fireSpinRight;
+    private BufferedImage p1Attack3Left;
+    private BufferedImage p1Attack3Right;
+    private BufferedImage fireSlashLeft;
+    private BufferedImage fireSlashRight;
 
-    private BufferedImage player2Base;
+
+    private BufferedImage player2BaseLeft;
+    private BufferedImage player2BaseRight;
     private BufferedImage player2Left;
     private BufferedImage player2Right;
-    private BufferedImage player2Up;
-    private BufferedImage p2Attack1;
+    private BufferedImage player2UpLeft;
+    private BufferedImage player2UpRight;
+    private BufferedImage p2Attack1Left;
+    private BufferedImage p2Attack1Right;
+    private BufferedImage blackFlashLeft;
+    private BufferedImage blackFlashRight;
+    private BufferedImage p2Attack2Left;
+    private BufferedImage p2Attack2Right;
+    private BufferedImage blackSlashLeft;
+    private BufferedImage blackSlashRight;
+    private BufferedImage p2Attack3Left;
+    private BufferedImage p2Attack3Right;
+    private BufferedImage worldSlashLeft;
+    private BufferedImage worldSlashRight;
 
     private BufferedImage noAttack;
 
     public DrawingManager() {
-        player1BaseLeft = loadImage("resources/images/Player_1_Xiao/XiaoBaseLeft.png");
-        player1BaseRight = loadImage("resources/images/Player_1_Xiao/XiaoBaseRight.png");
-        player1Left = loadImage("resources/images/Player_1_Xiao/XiaoLeft.png");
-        player1Right = loadImage("resources/images/Player_1_Xiao/XiaoRight.png");
-        player1Up = loadImage("resources/images/Player_1_Xiao/XiaoUp.png");
-        p1Attack1Left = loadImage("resources/images/Player_1_Xiao/XiaoAttack1Left.png");
-        p1Attack1Right = loadImage("resources/images/Player_1_Xiao/XiaoAttack1Right.png");
-        fireballLeft = loadImage("resources/images/Player_1_Xiao/fireballLeft.png");
-        fireballRight = loadImage("resources/images/Player_1_Xiao/fireballRight.png");
+        player1BaseLeft = loadImage("resources/images/Player_1_Xiao/xiaoBaseLeft.png");
+        player1BaseRight = loadImage("resources/images/Player_1_Xiao/xiaoBaseRight(1).png");
+        player1Left = loadImage("resources/images/Player_1_Xiao/xiaoDashLeft.png");
+        player1Right = loadImage("resources/images/Player_1_Xiao/xiaoDashRight.png");
+        player1UpLeft = loadImage("resources/images/Player_1_Xiao/xiaoUpLeft.png");
+        player1UpRight = loadImage("resources/images/Player_1_Xiao/xiaoUpRight.png");
+        p1Attack1Left = loadImage("resources/images/Player_1_Xiao/xiaoFugaLeft.png");
+        p1Attack1Right = loadImage("resources/images/Player_1_Xiao/xiaoFugaRight.png");
+        fireSpearLeft = loadImage("resources/images/Player_1_Xiao/fugaLeft.png");
+        fireSpearRight = loadImage("resources/images/Player_1_Xiao/fugaRight.png");
+        p1Attack2Left = loadImage("resources/images/Player_1_Xiao/xiaoChargingLeft.png");
+        p1Attack2Right = loadImage("resources/images/Player_1_Xiao/xiaoChargingRight.png");
+        fireSpinLeft = loadImage("resources/images/Player_1_Xiao/fugaSpinLeft.png");
+        fireSpinRight = loadImage("resources/images/Player_1_Xiao/fugaSpinRight.png");
+        p1Attack3Left = loadImage("resources/images/Player_1_Xiao/xiaoSlashLeft.png");
+        p1Attack3Right = loadImage("resources/images/Player_1_Xiao/xiaoSlashRight.png");
+        fireSlashLeft = loadImage("resources/images/Player_1_Xiao/worldCuttingFugaLeft.png");
+        fireSlashRight = loadImage("resources/images/Player_1_Xiao/worldCuttingFugaRight.png");
 
-        player2Base = loadImage("resources/images/Player_2_Roland/RolandBase.png");
-        player2Left = loadImage("resources/images/Player_2_Roland/RolandLeft.png");
-        player2Right = loadImage("resources/images/Player_2_Roland/RolandRight.png");
-        player2Up = loadImage("resources/images/Player_2_Roland/RolandUp.png");
-        //p2Attack1 = loadImage("resources/images/Player_2_Roland/RolandAttack1.png");
+        player2BaseLeft = loadImage("resources/images/Player_2_Roland/rolandBaseLeft.png");
+        player2BaseRight = loadImage("resources/images/Player_2_Roland/rolandBaseRight.png");
+        player2Left = loadImage("resources/images/Player_2_Roland/rolandDashLeft.png");
+        player2Right = loadImage("resources/images/Player_2_Roland/rolandDashRight.png");
+        player2UpRight = loadImage("resources/images/Player_2_Roland/rolandUpRight.png");
+        player2UpLeft = loadImage("resources/images/Player_2_Roland/rolandUpLeft.png");
+        p2Attack1Left = loadImage("resources/images/Player_2_Roland/rolandFlashLeft.png");
+        p2Attack1Right = loadImage("resources/images/Player_2_Roland/rolandFlashRight.png");
+        blackFlashLeft = loadImage("resources/images/Player_2_Roland/blackFlashLeft.png");
+        blackFlashRight = loadImage("resources/images/Player_2_Roland/blackFlashRight.png");
+        p2Attack2Left = loadImage("resources/images/Player_2_Roland/rolandSlashLeft.png");
+        p2Attack2Right = loadImage("resources/images/Player_2_Roland/rolandSlashRight.png");
+        blackSlashLeft = loadImage("resources/images/Player_2_Roland/blackSlashLeft.png");
+        blackSlashRight = loadImage("resources/images/Player_2_Roland/blackSlashRight.png");
+        p2Attack3Left = loadImage("resources/images/Player_2_Roland/rolandSlashLeft.png");
+        p2Attack3Right = loadImage("resources/images/Player_2_Roland/rolandSlashRight.png");
+        worldSlashLeft = loadImage("resources/images/Player_2_Roland/worldCuttingSlashLeft.png");
+        worldSlashRight = loadImage("resources/images/Player_2_Roland/worldCuttingSlashRight.png");
 
         noAttack = loadImage("resources/images/NoAttack.png");
     }
@@ -76,7 +121,7 @@ public class DrawingManager {
             return;
         }
 
-        BufferedImage image = (playerNumber == 2) ? player2Base : player1BaseLeft; //Keeps the base form if no other form is needed
+        BufferedImage image = (playerNumber == 2) ? player2BaseLeft : player1BaseRight; //Keeps the base form if no other form is needed
         
         if (playerNumber == 1) {
             if (imageNum == 0)
@@ -93,7 +138,7 @@ public class DrawingManager {
                 image = player1Right;
             } else if (imageNum == 4) 
             {
-                image = player1Up;
+                image = player1UpRight;
             } else if (imageNum == 5)
             {
                 image = p1Attack1Left;
@@ -104,7 +149,7 @@ public class DrawingManager {
         } else if (playerNumber == 2) {
             if (imageNum == 1) 
             {
-                image = player2Base;
+                image = player2BaseRight;
             } else if (imageNum == 2) 
             {
                 image = player2Left;
@@ -113,7 +158,7 @@ public class DrawingManager {
                 image = player2Right;
             } else if (imageNum == 4) 
             {
-                image = player2Up;
+                image = player2UpRight;
             }
         }
 
@@ -131,6 +176,7 @@ public class DrawingManager {
 
         BufferedImage image = noAttack; //Default to no attack image
 
+        /*
         if (playerNumber == 1) 
         {
             if (attackNum == 1) 
@@ -140,7 +186,7 @@ public class DrawingManager {
             {
                 image = fireballRight;
             }
-        } /*else if (playerNumber == 2) 
+        } else if (playerNumber == 2) 
          {
              if (attackNum == 1) 
             {
