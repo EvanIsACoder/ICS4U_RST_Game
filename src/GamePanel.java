@@ -169,9 +169,42 @@ private String urlAdjust(String path) {
 			// 坐标 (0, 0) 就是死死贴住顶部
 			var1.drawImage(topFrame, 0, 0, screenW, topDrawH, this);
 		}
+            if (topFrame != null) {
+              double topRatio = (double) screenW / topFrame.getWidth(null);
+              int topDrawH = (int) (topFrame.getHeight(null) * topRatio);
+              var1.drawImage(topFrame, 0, 0, screenW, topDrawH, this);
+        }
+
+        // --- DRAW VISUAL HEALTH BARS ---
+        int barWidth = 300;
+        int barHeight = 25;
+        
+        // Player 1 Health Bar (Top Left Corner)
+        int p1BarX = 50;
+        int p1BarY = 50;
+        var1.setColor(Color.DARK_GRAY); // Background empty slot
+        var1.fillRect(p1BarX, p1BarY, barWidth, barHeight);
+        
+        double p1HpRatio = (double) player1.getHp() / player1.getMaxHp();
+        var1.setColor(Color.GREEN); // Current Health
+        var1.fillRect(p1BarX, p1BarY, (int)(barWidth * p1HpRatio), barHeight);
+        var1.setColor(Color.WHITE); // Border Outline
+        var1.drawRect(p1BarX, p1BarY, barWidth, barHeight);
+
+        // Player 2 Health Bar (Top Right Corner)
+        int p2BarX = screenW - 350;
+        int p2BarY = 50;
+        var1.setColor(Color.DARK_GRAY);
+        var1.fillRect(p2BarX, p2BarY, barWidth, barHeight);
+        
+        double p2HpRatio = (double) player2.getHp() / player2.getMaxHp();
+        var1.setColor(Color.RED); // Let's make player 2 red for contrast
+        var1.fillRect(p2BarX, p2BarY, (int)(barWidth * p2HpRatio), barHeight);
+        var1.setColor(Color.WHITE);
+        var1.drawRect(p2BarX, p2BarY, barWidth, barHeight);
    }
 
-   @Override
+@Override
    public void actionPerformed(ActionEvent var1) {
       p1DashCD--;
       p2DashCD--;
@@ -179,51 +212,70 @@ private String urlAdjust(String path) {
 
       this.player1.update(this.getWidth(), panelHeight, panelHeight - 400);
       this.player2.update(this.getWidth(), panelHeight, panelHeight - 400);
-/*    
-      if (attackNum1 == 1) {
-          imageNum1 = 5;
-      } else if (attackNum1 == 2)
-      {
-          imageNum1 = 6;
-      }
-
-      if (imageNum1 == 0 ||imageNum1 == 1 )
-      {
-            player1.setHeight(300);
-            player1.setLength(1000);
-      }if (imageNum1 == 4)
-      {
-            player1.setHeight(460); 
-            player1.setLength(500);  
-      } else if (imageNum1 == 2 || imageNum1 == 3)
-      {
-            player1.setLength(500);
-      } else if (imageNum1 == 5 || imageNum1 == 6) {
-            player1.setLength(700);
-      } else
-      {
-            player1.setLength(250);
-            player1.setHeight(250);
+ 
+      /* --- COLLISION CHECKING LOGIC ---
+      // If Player 1 is actively using their fire spear projectile/attack
+      if (attackNum1 > 0) {
+          if (checkCollision(player2, attackP1)) {
+              player2.takeDamage(15); // Player 2 takes 15 damage
+          }
       }
       
+      // (Uncomment this once player 2's attack states are hooked up)
+      // if (attackNum2 > 0) {
+      //     if (checkCollision(player1, attackP2)) {
+      //         player1.takeDamage(15);
+      //     }
+      // }
+
+      // ... keep the rest of your original imageNum checks and movement code here ...
+      if (attackNum1 == 1) {
+          imageNum1 = 5;
+      } // ... etc
+        Your exact AABB concept mapped to your custom variable name methods
+    private boolean checkCollision(Box targetPlayer, Attack activeAttack) {
+        return activeAttack.getAttackX() + activeAttack.getAttackLength() > targetPlayer.getX() &&
+               activeAttack.getAttackX() < targetPlayer.getX() + targetPlayer.getLength() &&
+               activeAttack.getAttackY() + activeAttack.getAttackHeight() > targetPlayer.getY() &&
+               activeAttack.getAttackY() < targetPlayer.getY() + targetPlayer.getHeight();
+    } */
 
       if (player1.getXVelocity() == 0 && player1.getYVelocity() == 0)
       {
             if (player1.getX() > player2.getX())
             {
                   imageNum1 = 0;
-            } else
-            {
+            } else {
                   imageNum1 = 1;
             }
-      } */
+      }
 
-      if (imageNum2 == 1)
-      {
-            player2.setLength(100);   
-      } else 
-      {
-            player2.setLength(250);
+      if (attackNum1 == 1) {
+            imageNum1 = 5;
+      } else if (attackNum1 == 2) {
+            imageNum1 = 6;
+      } else if (attackNum1 == 3) {
+            imageNum1 = 7;
+      } else if (attackNum1 == 4) {
+            imageNum1 = 8;
+      } else if (attackNum1 == 5) {
+            imageNum1 = 9;
+      } else if (attackNum1 == 6) {
+            imageNum1 = 10;
+      }
+
+      if (attackNum2 == 1) {
+            imageNum2 = 5;
+      } else if (attackNum2 == 2) {
+            imageNum2 = 6;
+      } else if (attackNum2 == 3) {
+            imageNum2 = 7;
+      } else if (attackNum2 == 4) {
+            imageNum2 = 8;
+      } else if (attackNum2 == 5) {
+            imageNum2 = 9;
+      } else if (attackNum2 == 6) {
+            imageNum2 = 10;
       }
 
       if (fireballCD > 0 && attackNum1 == 1) {
@@ -251,7 +303,7 @@ private String urlAdjust(String path) {
       }
 
       if (var2 == 87) { 
-            imageNum1 = 4; 
+            imageNum1 = 4;
             this.player1.jump();
       }
 
@@ -273,7 +325,7 @@ private String urlAdjust(String path) {
 
       //Fireball attack
       if (var2 == 84 && fireballCD <= 0) {
-            if (player1.getXVelocity() < 0)
+            if (!player1.getFacingRight())
             {
                   attackNum1 = 1;
                   fireballCD = 48;
@@ -281,7 +333,7 @@ private String urlAdjust(String path) {
                   attackP1.setAttackX(player1.getX() - 500);
                   player1.setXVelocity(0);
                   player1.setYVelocity(0);
-            } else if (player1.getXVelocity() > 0)
+            } else
             {
                   attackNum1 = 2;
                   fireballCD = 48;
@@ -292,7 +344,27 @@ private String urlAdjust(String path) {
             }
       }
 
-      //
+      if (var2 == 71)
+      {
+            if (!player1.getFacingRight())
+            {
+                  attackNum1 = 3;
+            } else
+            {
+                  attackNum1 = 4;
+            }
+      }
+
+      if (var2 == 86)
+      {
+            if (!player1.getFacingRight())
+            {
+                  attackNum1 = 5;
+            } else
+            {
+                  attackNum1 = 6;
+            }
+      }
 
       //Player 2
       if (var2 == 37) { 
@@ -326,6 +398,38 @@ private String urlAdjust(String path) {
             p2DashCD = 16; 
       }
 
+      if (var2 == 79)
+      {
+            if (player2.getFacingRight())
+            {
+                  attackNum2 = 1;
+            } else
+            {
+                  attackNum2 = 2;
+            }
+      }
+      
+      if (var2 == 76)
+      {
+            if (player2.getFacingRight())
+            {
+                  attackNum2 = 3;
+            } else
+            {
+                  attackNum2 = 4;
+            }
+      }
+
+      if (var2 == 75)
+      {
+            if (player2.getFacingRight())
+            {
+                  attackNum2 = 5;
+            } else
+            {
+                  attackNum2 = 6;
+            }
+      }
    }
 
    @Override
@@ -349,8 +453,9 @@ private String urlAdjust(String path) {
       }
 
       // testing to stop drawing attack
-      if (var2 == 84) {
+      if (var2 == 84 || var2 == 71 || var2 == 86) {
             attackNum1 = 0;
+            imageNum1 = 1;
       }
     }
 

@@ -3,6 +3,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Box {
+    // --- HEALTH BAR SYSTEM VARIABLES ---
+    private int hp = 100;
+    private final int MAX_HP = 100;
+    private long lastHitTime = 0; // Tracks invincibility frames
+    private final long INVINCIBILITY_COOLDOWN = 500; // 0.5 seconds in milliseconds
+
     private int x = 250;
     private int y = 250;
     private int height = 250;
@@ -15,6 +21,7 @@ public class Box {
     private double JUMP_STRENGTH = -30.0;
     private int MOVE_SPEED = 15;
     private boolean isGrounded = false;
+    private boolean facingRight;
 
     public int getXVelocity() {
         return xVelocity;
@@ -77,6 +84,20 @@ public class Box {
     public void setSpeed (int newSpeed)
     {
         MOVE_SPEED = newSpeed;
+    }
+
+    public boolean getFacingRight ()
+    {
+        if (xVelocity > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void setFacingRight (boolean directionIsRight)
+    {
+        facingRight = directionIsRight;
     }
 
     public void update(int panelWidth, int panelHeight, int groundY) {
@@ -151,6 +172,25 @@ public class Box {
         if (!isGrounded) {
             yVelocity = -JUMP_STRENGTH;
             isGrounded = true;
+        }
+    }
+    // --- HEALTH GETTERS AND SETTERS ---
+    public int getHp() {
+        return hp;
+    }
+
+    public int getMaxHp() {
+        return MAX_HP;
+    }
+
+    public void takeDamage(int amount) {
+        long currentTime = System.currentTimeMillis();
+        // Only take damage if the invincibility cooldown has passed
+        if (currentTime - lastHitTime >= INVINCIBILITY_COOLDOWN) {
+            this.hp -= amount;
+            if (this.hp < 0) this.hp = 0;
+            lastHitTime = currentTime; // Reset the invincibility timer
+            System.out.println("Ouch! HP reduced to: " + this.hp);
         }
     }
 }

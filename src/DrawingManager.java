@@ -82,8 +82,8 @@ public class DrawingManager {
         p2Attack2Right = loadImage("resources/images/Player_2_Roland/rolandSlashRight.png");
         blackSlashLeft = loadImage("resources/images/Player_2_Roland/blackSlashLeft.png");
         blackSlashRight = loadImage("resources/images/Player_2_Roland/blackSlashRight.png");
-        p2Attack3Left = loadImage("resources/images/Player_2_Roland/rolandSlashLeft.png");
-        p2Attack3Right = loadImage("resources/images/Player_2_Roland/rolandSlashRight.png");
+        p2Attack3Left = loadImage("resources/images/Player_2_Roland/rolandSwingLeft.png");
+        p2Attack3Right = loadImage("resources/images/Player_2_Roland/rolandSwingRight.png");
         worldSlashLeft = loadImage("resources/images/Player_2_Roland/worldCuttingSlashLeft.png");
         worldSlashRight = loadImage("resources/images/Player_2_Roland/worldCuttingSlashRight.png");
 
@@ -127,39 +127,128 @@ public class DrawingManager {
             if (imageNum == 0)
             {
                 image = player1BaseLeft;
+                player.setHeight(400);
+                player.setLength(500);
             }else if (imageNum == 1) 
             {
                 image = player1BaseRight;
+                player.setHeight(400);
+                player.setLength(500);
             } else if (imageNum == 2) 
             {
                 image = player1Left;
+                player.setHeight(400);
+                player.setLength(500);
             } else if (imageNum == 3) 
             {
                 image = player1Right;
+                player.setHeight(400);
+                player.setLength(500);
             } else if (imageNum == 4) 
             {
-                image = player1UpRight;
+                if (!player.getFacingRight())
+                    {
+                        image = player1UpLeft;
+                    } else
+                    {
+                        image = player1UpRight;
+                    } 
+                player.setHeight(400);
+                player.setLength(500);
             } else if (imageNum == 5)
             {
                 image = p1Attack1Left;
+                player.setHeight(380);
+                player.setLength(1000);
             } else if (imageNum == 6)
             {
                 image = p1Attack1Right;
+                player.setHeight(380);
+                player.setLength(1000);
+            } else if (imageNum == 7) 
+            {
+                image = p1Attack2Left;
+                player.setHeight(380);
+                player.setLength(1000);
+            } else if (imageNum == 8) 
+            {
+                image = p1Attack2Right;
+                player.setHeight(380);
+                player.setLength(1000);
+            } else if (imageNum == 9) 
+            {
+                image = p1Attack3Left;
+                player.setHeight(750);
+                player.setLength(750);
+            } else if (imageNum == 10) 
+            {
+                image = p1Attack3Right;
+                player.setHeight(750);
+                player.setLength(750);
             }
         } else if (playerNumber == 2) {
-            if (imageNum == 1) 
-            {
-                image = player2BaseRight;
-            } else if (imageNum == 2) 
-            {
-                image = player2Left;
-            } else if (imageNum == 3) 
-            {
-                image = player2Right;
-            } else if (imageNum == 4) 
-            {
-                image = player2UpRight;
-            }
+            if (imageNum == 0)
+                {
+                    image = player2BaseLeft;
+                    player.setHeight(400);
+                    player.setLength(500);
+                }else if (imageNum == 1) 
+                {
+                    image = player2BaseRight;
+                    player.setHeight(400);
+                    player.setLength(500);
+                } else if (imageNum == 2) 
+                {
+                    image = player2Left;
+                    player.setHeight(400);
+                    player.setLength(500);
+                } else if (imageNum == 3) 
+                {
+                    image = player2Right;
+                    player.setHeight(400);
+                    player.setLength(500);
+                } else if (imageNum == 4) 
+                {
+                    if (!player.getFacingRight())
+                        {
+                            image = player2UpLeft;
+                        } else
+                        {
+                            image = player2UpRight;
+                        } 
+                    player.setHeight(400);
+                    player.setLength(500);
+                } else if (imageNum == 5)
+                {
+                    image = p2Attack1Left;
+                    player.setHeight(380);
+                    player.setLength(1000);
+                } else if (imageNum == 6)
+                {
+                    image = p2Attack1Right;
+                    player.setHeight(380);
+                    player.setLength(1000);
+                } else if (imageNum == 7) 
+                {
+                    image = p2Attack2Left;
+                    player.setHeight(380);
+                    player.setLength(1000);
+                } else if (imageNum == 8) 
+                {
+                    image = p2Attack2Right;
+                    player.setHeight(380);
+                    player.setLength(1000);
+                } else if (imageNum == 9) 
+                {
+                    image = p2Attack3Left;
+                    player.setHeight(750);
+                    player.setLength(750);
+                } else if (imageNum == 10) 
+                {
+                    image = p2Attack3Right;
+                    player.setHeight(750);
+                    player.setLength(750);
+                }
         }
 
         if (image != null) {
