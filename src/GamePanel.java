@@ -34,10 +34,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public int attackNum2;
 
    public int p1DashCD = 0;
+   public int autoAttackCancel1 = 0;
    public int p2DashCD = 0;
+   public int autoAttackCancel2 = 0;
 
    public int fireballCD = 0;
-
+   public int fireSpinCD = 0;
+   public int fireSlashCD = 0;
+   
    public GamePanel() {
         bgWall = loadImage("/images/Texture2D/Xiao_Background_Wall.png");
         bgFloor = loadImage("/images/Texture2D/Xiao_Background_Floor.png");
@@ -93,9 +97,14 @@ private String urlAdjust(String path) {
    @Override
    protected void paintComponent(Graphics var1) {
         super.paintComponent(var1);
-      
+
+
         int screenW = getWidth();
         int screenH = getHeight();
+
+        if (isGameOver) {
+            paintDeathOverlay(var1, screenW, screenH);
+        }
 
        // 1. Sky
        if (bgWall != null){
@@ -175,43 +184,40 @@ private String urlAdjust(String path) {
               var1.drawImage(topFrame, 0, 0, screenW, topDrawH, this);
         }
 
-        // --- DRAW VISUAL HEALTH BARS ---
-        int barWidth = 300;
-        int barHeight = 25;
-        
-        // Player 1 Health Bar (Top Left Corner)
-        int p1BarX = 50;
-        int p1BarY = 50;
-        var1.setColor(Color.DARK_GRAY); // Background empty slot
-        var1.fillRect(p1BarX, p1BarY, barWidth, barHeight);
-        
-        double p1HpRatio = (double) player1.getHp() / player1.getMaxHp();
-        var1.setColor(Color.GREEN); // Current Health
-        var1.fillRect(p1BarX, p1BarY, (int)(barWidth * p1HpRatio), barHeight);
-        var1.setColor(Color.WHITE); // Border Outline
-        var1.drawRect(p1BarX, p1BarY, barWidth, barHeight);
+//Health bars
+        drawBetterBar(var1, 50, 55, player1.getHp(), player1.getMaxHp(), new Color(46, 204, 113), "P1");
+        drawBetterBar(var1, screenW - 400, 55, player2.getHp(), player2.getMaxHp(), new Color(231, 76, 60), "P2");
 
-        // Player 2 Health Bar (Top Right Corner)
-        int p2BarX = screenW - 350;
-        int p2BarY = 50;
-        var1.setColor(Color.DARK_GRAY);
-        var1.fillRect(p2BarX, p2BarY, barWidth, barHeight);
-        
-        double p2HpRatio = (double) player2.getHp() / player2.getMaxHp();
-        var1.setColor(Color.RED); // Let's make player 2 red for contrast
-        var1.fillRect(p2BarX, p2BarY, (int)(barWidth * p2HpRatio), barHeight);
-        var1.setColor(Color.WHITE);
-        var1.drawRect(p2BarX, p2BarY, barWidth, barHeight);
+        if (matchEnded) {
+            drawMinimalistGameOver(var1, screenW, screenH);
+        }
    }
 
 @Override
    public void actionPerformed(ActionEvent var1) {
+
+if (matchEnded) { this.repaint(); return; }
+        verifyEndCondition();
+
       p1DashCD--;
-      p2DashCD--;
       fireballCD--;
+      fireSpinCD--;
+      fireSlashCD--;
+      autoAttackCancel1--;
+
+      p2DashCD--;
+      autoAttackCancel2--;
+
+      if (isGameOver) { this.repaint(); return; }
+        checkMatchStatus();
 
       this.player1.update(this.getWidth(), panelHeight, panelHeight - 400);
       this.player2.update(this.getWidth(), panelHeight, panelHeight - 400);
+
+      checkAttackHits(); 
+
+   this.player1.update(this.getWidth(), panelHeight, panelHeight - 400);
+   this.player2.update(this.getWidth(), panelHeight, panelHeight - 400);
  
       /* --- COLLISION CHECKING LOGIC ---
       // If Player 1 is actively using their fire spear projectile/attack
@@ -240,7 +246,7 @@ private String urlAdjust(String path) {
                activeAttack.getAttackY() < targetPlayer.getY() + targetPlayer.getHeight();
     } */
 
-      if (player1.getXVelocity() == 0 && player1.getYVelocity() == 0)
+      if (player1.getXVelocity() == 0 && player1.getYVelocity() == 0 && attackNum1 == 0)
       {
             if (player1.getX() > player2.getX())
             {
@@ -284,6 +290,11 @@ private String urlAdjust(String path) {
             attackP1.setAttackX(attackP1.getAttackX() + 30);
       }
 
+      if (autoAttackCancel1 == 0)
+      {
+            attackNum1 = 0;
+      }
+  
       this.repaint();
    }
 
@@ -291,14 +302,26 @@ private String urlAdjust(String path) {
    public void keyPressed(KeyEvent var1) {
       int var2 = var1.getKeyCode();
       
+      if (matchEnded) {
+            if (var2 == KeyEvent.VK_ENTER) { hardResetCurrentMatch(); }
+            return;
+        }
+
+      if (isGameOver) {
+            if (var2 == KeyEvent.VK_ENTER) { restartGame(); }
+            return;
+        }
+
       //Player 1
       if (var2 == 65) {
-            imageNum1 = 2; 
+            imageNum1 = 2;
+            player1.setFacingRight(false); 
             this.player1.setLeftVelocity();
       }
 
       if (var2 == 68) {
             imageNum1 = 3; 
+            player1.setFacingRight(true); 
             this.player1.setRightVelocity();
       }
 
@@ -329,40 +352,66 @@ private String urlAdjust(String path) {
             {
                   attackNum1 = 1;
                   fireballCD = 48;
-                  attackP1.setAttackY(player1.getY());
-                  attackP1.setAttackX(player1.getX() - 500);
                   player1.setXVelocity(0);
                   player1.setYVelocity(0);
+                  attackP1.setAttackY(player1.getY());
+                  attackP1.setAttackX(player1.getX() - 500);
             } else
             {
                   attackNum1 = 2;
                   fireballCD = 48;
-                  attackP1.setAttackY(player1.getY());
-                  attackP1.setAttackX(player1.getX() + 500);
                   player1.setXVelocity(0);
                   player1.setYVelocity(0);
+                  attackP1.setAttackY(player1.getY());
+                  attackP1.setAttackX(player1.getX() + 500);
             }
       }
 
-      if (var2 == 71)
+      //Fire spin attack
+      while (var2 == 71 && fireSpinCD <= 0)
       {
+            autoAttackCancel1 = 8;
+            
             if (!player1.getFacingRight())
             {
                   attackNum1 = 3;
+                  fireSpinCD = 24;
+                  player1.setXVelocity(0);
+                  player1.setYVelocity(0);
+                  attackP1.setAttackY(player1.getY() - 600);
+                  attackP1.setAttackX(player1.getX() - 450);
             } else
             {
                   attackNum1 = 4;
+                  fireSpinCD = 24;
+                  player1.setXVelocity(0);
+                  player1.setYVelocity(0);
+                  attackP1.setAttackY(player1.getY() - 600);
+                  attackP1.setAttackX(player1.getX() - 100);
             }
       }
 
-      if (var2 == 86)
-      {
+      //Fire slash attack
+      if (var2 == 86 && fireSlashCD <= 0)
+      {     
+            autoAttackCancel1 = 8;
+
             if (!player1.getFacingRight())
             {
                   attackNum1 = 5;
+                  fireSlashCD = 64;
+                  player1.setXVelocity(0);
+                  player1.setYVelocity(0);
+                  attackP1.setAttackY(player1.getY() - 400);
+                  attackP1.setAttackX(player1.getX() - 450);
             } else
             {
                   attackNum1 = 6;
+                  fireSlashCD = 64;
+                  player1.setXVelocity(0);
+                  player1.setYVelocity(0);
+                  attackP1.setAttackY(player1.getY() - 400);
+                  attackP1.setAttackX(player1.getX() - 450);
             }
       }
 
@@ -435,20 +484,27 @@ private String urlAdjust(String path) {
    @Override
    public void keyReleased(KeyEvent var1) 
    {
+      autoAttackCancel1 = 0;
+      autoAttackCancel2 = 0;
+
       int var2 = var1.getKeyCode();
       if (var2 == 65) {
+            attackNum1 = 0;
             this.player1.stopLeftVelocity();
       }
 
       if (var2 == 68) {
+            attackNum1 = 0;
             this.player1.stopRightVelocity();
       }
 
       if (var2 == 37) {
+            attackNum1 = 0;
             this.player2.stopLeftVelocity();
       }
 
       if (var2 == 39) {
+            attackNum1 = 0;
             this.player2.stopRightVelocity();
       }
 
@@ -464,4 +520,133 @@ private String urlAdjust(String path) {
    {
         //Empty but this needs to exist
    }
+
+// --- POLISHED HEALTH BAR SYSTEM ---
+    public void drawBetterBar(Graphics g, int x, int y, double hp, double max, Color fill, String label) {
+        int w = 350, h = 25;
+        g.setColor(new Color(40, 40, 40)); // Sleek dark track
+        g.fillRect(x, y, w, h);
+        if (hp > 0) {
+            g.setColor(fill); // Dynamic health color fill
+            g.fillRect(x + 2, y + 2, (int) ((w - 4) * (hp / max)), h - 4);
+        }
+        g.setColor(new Color(212, 175, 55)); // Metallic Gold Border
+        g.drawRect(x, y, w, h);
+        g.setColor(Color.WHITE); // Text Overlay
+        g.drawString(label + ": " + (int)hp + "/" + (int)max, x + 10, y + 17);
+    }
+
+// --- COLLISION LOGIC ---
+    private void checkAttackHits() {
+        // If Player 1 is attacking, check if hitboxes overlap Player 2
+        if (attackNum1 > 0 && isOverlapping(player2, attackP1)) {
+            player2.takeDamage(attackNum1 >= 5 ? 25 : 15); // Slashes (5-6) deal more damage
+        }
+        // If Player 2 is attacking, check if hitboxes overlap Player 1
+        if (attackNum2 > 0 && isOverlapping(player1, attackP2)) {
+            player1.takeDamage(15);
+        }
+    }
+
+    private boolean isOverlapping(Box player, Attack attack) {
+        return attack.getAttackX() + attack.getAttackLength() > player.getX() &&
+               attack.getAttackX() < player.getX() + player.getLength() &&
+               attack.getAttackY() + attack.getAttackHeight() > player.getY() &&
+               attack.getAttackY() < player.getY() + player.getHeight();
+    }
+
+// --- DEATH SCREEN EXTENSION ---
+    private boolean isGameOver = false;
+    private String winnerText = "";
+
+    private void checkMatchStatus() {
+        if (!isGameOver) {
+            if (player1.getHp() <= 0) {
+                isGameOver = true;
+                winnerText = "PLAYER 2 WINS!";
+            } else if (player2.getHp() <= 0) {
+                isGameOver = true;
+                winnerText = "PLAYER 1 WINS!";
+            }
+        }
+    }
+
+    private void paintDeathOverlay(Graphics g, int w, int h) {
+        g.setColor(new Color(0, 0, 0, 230));
+        g.fillRect(0, 0, w, h);
+        g.setFont(new Font("Arial", Font.BOLD, 75));
+        g.setColor(new Color(240, 50, 50));
+        g.drawString(winnerText, (w - g.getFontMetrics().stringWidth(winnerText)) / 2, h / 2 - 30);
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
+        g.setColor(Color.WHITE);
+        String sub = "Press ENTER to Restart";
+        g.drawString(sub, (w - g.getFontMetrics().stringWidth(sub)) / 2, h / 2 + 50);
+    }
+
+    private void restartGame() {
+        try {
+            java.lang.reflect.Field hp1 = Box.class.getDeclaredField("hp");
+            hp1.setAccessible(true); hp1.set(player1, 100.0);
+            java.lang.reflect.Field hp2 = Box.class.getDeclaredField("hp");
+            hp2.setAccessible(true); hp2.set(player2, 100.0);
+        } catch(Exception e) {}
+        player1.setX(150); player1.setY(250);
+        player2.setX(this.getWidth() - 650); player2.setY(250);
+        attackNum1 = 0; attackNum2 = 0;
+        isGameOver = false;
+    }
+
+// --- UNIQUE CONFIGURATION FOR SIMPLISTIC GAME OVER ---
+    private boolean matchEnded = false;
+    private String endScreenWinnerLabel = "";
+
+    private void verifyEndCondition() {
+        if (!matchEnded) {
+            if (player1.getHp() <= 0) {
+                matchEnded = true;
+                endScreenWinnerLabel = "PLAYER 2 WINS";
+            } else if (player2.getHp() <= 0) {
+                matchEnded = true;
+                endScreenWinnerLabel = "PLAYER 1 WINS";
+            }
+        }
+    }
+
+    private void drawMinimalistGameOver(Graphics g, int w, int h) {
+        g.setColor(new Color(15, 15, 15, 245));
+        g.fillRect(0, 0, w, h);
+        
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        // "GAME OVER"
+        g2.setFont(new Font("Helvetica Neue", Font.BOLD, 80));
+        g2.setColor(new Color(220, 50, 50));
+        String mainTitle = "GAME OVER";
+        g2.drawString(mainTitle, (w - g2.getFontMetrics().stringWidth(mainTitle)) / 2, h / 2 - 80);
+
+        // Winner Subtitle
+        g2.setFont(new Font("Helvetica Neue", Font.PLAIN, 32));
+        g2.setColor(Color.WHITE);
+        g2.drawString(endScreenWinnerLabel, (w - g2.getFontMetrics().stringWidth(endScreenWinnerLabel)) / 2, h / 2 + 10);
+
+        // Subtext Instruction
+        g2.setFont(new Font("Helvetica Neue", Font.ITALIC, 20));
+        g2.setColor(new Color(140, 140, 140));
+        String restartHint = "press ENTER twice to play again";
+        g2.drawString(restartHint, (w - g2.getFontMetrics().stringWidth(restartHint)) / 2, h / 2 + 100);
+    }
+
+    private void hardResetCurrentMatch() {
+        try {
+            java.lang.reflect.Field hp1 = Box.class.getDeclaredField("hp");
+            hp1.setAccessible(true); hp1.set(player1, 100.0);
+            java.lang.reflect.Field hp2 = Box.class.getDeclaredField("hp");
+            hp2.setAccessible(true); hp2.set(player2, 100.0);
+        } catch(Exception e) {}
+        player1.setX(150); player1.setY(250);
+        player2.setX(this.getWidth() - 650); player2.setY(250);
+        attackNum1 = 0; attackNum2 = 0;
+        matchEnded = false;
+    }
 }

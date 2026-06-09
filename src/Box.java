@@ -4,8 +4,8 @@ import java.awt.Graphics;
 
 public class Box {
     // --- HEALTH BAR SYSTEM VARIABLES ---
-    private int hp = 100;
-    private final int MAX_HP = 100;
+    private double hp = 100.0;
+    private final double MAX_HP = 100.0;
     private long lastHitTime = 0; // Tracks invincibility frames
     private final long INVINCIBILITY_COOLDOWN = 500; // 0.5 seconds in milliseconds
 
@@ -175,11 +175,11 @@ public class Box {
         }
     }
     // --- HEALTH GETTERS AND SETTERS ---
-    public int getHp() {
+    public double getHp() {
         return hp;
     }
 
-    public int getMaxHp() {
+    public double getMaxHp() {
         return MAX_HP;
     }
 

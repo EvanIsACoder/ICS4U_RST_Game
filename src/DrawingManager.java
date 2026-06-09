@@ -271,16 +271,39 @@ public class DrawingManager {
             if (attackNum == 1) 
             {
                 image = fireSpearLeft;
+                attack.setAttackHeight(400);
+                attack.setAttackLength(750);
             } else if (attackNum == 2)
             {
                 image = fireSpearRight;
+                attack.setAttackHeight(400);
+                attack.setAttackLength(750);
+            } else if (attackNum == 3)
+            {
+                image = fireSpinLeft;
+                attack.setAttackHeight(1000);
+                attack.setAttackLength(1500);
+            } else if (attackNum == 4)
+            {
+                image = fireSpinRight;
+                attack.setAttackHeight(1000);
+                attack.setAttackLength(1500);
+            } else if (attackNum == 5)
+            {
+                image = fireSlashLeft;
+                attack.setAttackHeight(1000);
+                attack.setAttackLength(1500);
+            } else if (attackNum == 6)
+            {
+                image = fireSlashRight;
+                attack.setAttackHeight(1000);
+                attack.setAttackLength(1500);
             }
         } else if (playerNumber == 2) 
          {
             
         }
-       
-
+    
             if (attackNum == 0)
             {
                 image = noAttack;

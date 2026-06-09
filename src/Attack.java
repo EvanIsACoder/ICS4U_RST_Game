@@ -44,4 +44,9 @@ public class Attack {
         g.setColor(Color.RED);
         g.fillRect(attackX, attackY, attackLength, attackHeight);
     }
+
+// --- DAMAGE VALUE ---
+    public int getDamage() {
+        return 15; // Base damage dealt per hit frame
+    }
 }
