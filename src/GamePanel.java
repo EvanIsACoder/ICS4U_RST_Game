@@ -12,6 +12,9 @@ import javax.imageio.ImageIO;
 import java.io.File;        // <--- 核心补丁：告诉 Java 什么是 File
 import java.io.IOException; // <--- 核心补丁：告诉 Java 什么是 IOException
 import java.net.URL;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioInputStream;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
    private final Box player1;
@@ -41,6 +44,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
    public int fireballCD = 0;
    public int fireSpinCD = 0;
    public int fireSlashCD = 0;
+
+   public int comboCharge1 = 0;
+   public int comboCharge2 = 0;
+   private static final int MAX_COMBO_CHARGE = 4;
+   private boolean p1ComboReady = false;
+   private boolean p2ComboReady = false;
+   private boolean p1AttackHitRegistered = false;
+   private boolean p2AttackHitRegistered = false;
+
+   private void playSound(String soundFile) {
+    try {
+        File file = new File("resources/Sounds/" + soundFile);
+        if (file.exists()) {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+        } else {
+            System.err.println("Sound file not found: " + soundFile);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
    
    public GamePanel() {
         bgWall = loadImage("/images/Texture2D/Xiao_Background_Wall.png");
@@ -78,10 +105,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             // 这里的 File 就需要 import java.io.File
             File file = new File("resources" + path); 
             if (file.exists()) {
-                  System.out.println("✅ 从物理路径抓到了图: " + path);
                   return ImageIO.read(file);
-            } else {
-                  System.out.println("❌ 还是没找到: " + file.getAbsolutePath());
             }
       } catch (IOException e) { // 这里的 IOException 就需要 import java.io.IOException
             e.printStackTrace();
@@ -187,6 +211,11 @@ private String urlAdjust(String path) {
 //Health bars
         drawBetterBar(var1, 50, 55, player1.getHp(), player1.getMaxHp(), new Color(46, 204, 113), "P1");
         drawBetterBar(var1, screenW - 400, 55, player2.getHp(), player2.getMaxHp(), new Color(231, 76, 60), "P2");
+        int comboSectionW = 52;
+        int comboSpacing = 8;
+        int comboTotalWidth = MAX_COMBO_CHARGE * comboSectionW + (MAX_COMBO_CHARGE - 1) * comboSpacing;
+        drawComboBar(var1, 50, 90, comboCharge1, MAX_COMBO_CHARGE, new Color(255, 255, 255), "COMBO1");
+        drawComboBar(var1, screenW - 50 - comboTotalWidth, 90, comboCharge2, MAX_COMBO_CHARGE, new Color(255, 255, 255), "COMBO2");
 
         if (matchEnded) {
             drawMinimalistGameOver(var1, screenW, screenH);
@@ -219,32 +248,6 @@ if (matchEnded) { this.repaint(); return; }
    this.player1.update(this.getWidth(), panelHeight, panelHeight - 400);
    this.player2.update(this.getWidth(), panelHeight, panelHeight - 400);
  
-      /* --- COLLISION CHECKING LOGIC ---
-      // If Player 1 is actively using their fire spear projectile/attack
-      if (attackNum1 > 0) {
-          if (checkCollision(player2, attackP1)) {
-              player2.takeDamage(15); // Player 2 takes 15 damage
-          }
-      }
-      
-      // (Uncomment this once player 2's attack states are hooked up)
-      // if (attackNum2 > 0) {
-      //     if (checkCollision(player1, attackP2)) {
-      //         player1.takeDamage(15);
-      //     }
-      // }
-
-      // ... keep the rest of your original imageNum checks and movement code here ...
-      if (attackNum1 == 1) {
-          imageNum1 = 5;
-      } // ... etc
-        Your exact AABB concept mapped to your custom variable name methods
-    private boolean checkCollision(Box targetPlayer, Attack activeAttack) {
-        return activeAttack.getAttackX() + activeAttack.getAttackLength() > targetPlayer.getX() &&
-               activeAttack.getAttackX() < targetPlayer.getX() + targetPlayer.getLength() &&
-               activeAttack.getAttackY() + activeAttack.getAttackHeight() > targetPlayer.getY() &&
-               activeAttack.getAttackY() < targetPlayer.getY() + targetPlayer.getHeight();
-    } */
 
       if (player1.getXVelocity() == 0 && player1.getYVelocity() == 0 && attackNum1 == 0)
       {
@@ -255,6 +258,16 @@ if (matchEnded) { this.repaint(); return; }
                   imageNum1 = 1;
             }
       }
+
+      if (player2.getXVelocity() == 0 && player2.getYVelocity() == 0 && attackNum2 == 0)
+            {
+                  if (player2.getX() > player1.getX())
+                  {
+                        imageNum2 = 0;
+                  } else {
+                        imageNum2 = 1;
+                  }
+            }
 
       if (attackNum1 == 1) {
             imageNum1 = 5;
@@ -294,6 +307,11 @@ if (matchEnded) { this.repaint(); return; }
       {
             attackNum1 = 0;
       }
+
+      if (autoAttackCancel2 == 0)
+            {
+                  attackNum2 = 0;
+            }
   
       this.repaint();
    }
@@ -348,6 +366,11 @@ if (matchEnded) { this.repaint(); return; }
 
       //Fireball attack
       if (var2 == 84 && fireballCD <= 0) {
+            if (comboCharge1 >= MAX_COMBO_CHARGE) {
+                  p1ComboReady = true;
+                  comboCharge1 = 0;
+            }
+            p1AttackHitRegistered = false;
             if (!player1.getFacingRight())
             {
                   attackNum1 = 1;
@@ -370,8 +393,12 @@ if (matchEnded) { this.repaint(); return; }
       //Fire spin attack
       while (var2 == 71 && fireSpinCD <= 0)
       {
+            if (comboCharge1 >= MAX_COMBO_CHARGE) {
+                  p1ComboReady = true;
+                  comboCharge1 = 0;
+            }
             autoAttackCancel1 = 8;
-            
+            p1AttackHitRegistered = false;
             if (!player1.getFacingRight())
             {
                   attackNum1 = 3;
@@ -394,7 +421,12 @@ if (matchEnded) { this.repaint(); return; }
       //Fire slash attack
       if (var2 == 86 && fireSlashCD <= 0)
       {     
+            if (comboCharge1 >= MAX_COMBO_CHARGE) {
+                  p1ComboReady = true;
+                  comboCharge1 = 0;
+            }
             autoAttackCancel1 = 8;
+            p1AttackHitRegistered = false;
 
             if (!player1.getFacingRight())
             {
@@ -436,6 +468,7 @@ if (matchEnded) { this.repaint(); return; }
             this.player2.jumpCancel();
       }
 
+      //Dash
       if (var2 == 80 && p2DashCD <= 0) {
             if (player2.getXVelocity() > 0) {
                 player2.setX(player2.getX() + 300);
@@ -447,19 +480,39 @@ if (matchEnded) { this.repaint(); return; }
             p2DashCD = 16; 
       }
 
+      //Dash attack
       if (var2 == 79)
       {
+            if (comboCharge2 >= MAX_COMBO_CHARGE) {
+                  p2ComboReady = true;
+                  comboCharge2 = 0;
+            }
+            autoAttackCancel2 = 8;
+            p2AttackHitRegistered = false;
             if (player2.getFacingRight())
             {
                   attackNum2 = 1;
+                  player2.setX(player2.getX() + 100);
+                  attackP2.setAttackY(player2.getY() - 100);
+                  attackP2.setAttackX(player2.getX() + 250);
             } else
             {
                   attackNum2 = 2;
+                  player2.setX(player2.getX() - 100);
+                  attackP2.setAttackY(player2.getY() - 100);
+                  attackP2.setAttackX(player2.getX() - 250);
             }
       }
       
+      //Slasha ttack
       if (var2 == 76)
       {
+            if (comboCharge2 >= MAX_COMBO_CHARGE) {
+                  p2ComboReady = true;
+                  comboCharge2 = 0;
+            }
+            autoAttackCancel2 = 8;
+            p2AttackHitRegistered = false;
             if (player2.getFacingRight())
             {
                   attackNum2 = 3;
@@ -469,8 +522,15 @@ if (matchEnded) { this.repaint(); return; }
             }
       }
 
+      //Big slash
       if (var2 == 75)
       {
+            if (comboCharge2 >= MAX_COMBO_CHARGE) {
+                  p2ComboReady = true;
+                  comboCharge2 = 0;
+            }
+            autoAttackCancel2 = 8;
+            p2AttackHitRegistered = false;
             if (player2.getFacingRight())
             {
                   attackNum2 = 5;
@@ -513,6 +573,12 @@ if (matchEnded) { this.repaint(); return; }
             attackNum1 = 0;
             imageNum1 = 1;
       }
+
+      if (var2 == 79 || var2 == 76 || var2 == 75) {
+            attackNum2 = 0;
+            imageNum2 = 1;
+      }
+
     }
 
    @Override
@@ -536,15 +602,71 @@ if (matchEnded) { this.repaint(); return; }
         g.drawString(label + ": " + (int)hp + "/" + (int)max, x + 10, y + 17);
     }
 
+    public void drawComboBar(Graphics g, int x, int y, int charge, int maxCharge, Color fill, String label) {
+        int sectionW = 52;
+        int sectionH = 12;
+        int spacing = 8;
+
+        for (int i = 0; i < maxCharge; i++) {
+            int segmentX = x + i * (sectionW + spacing);
+            g.setColor(i < charge ? fill : new Color(100, 100, 100));
+            g.fillRect(segmentX, y, sectionW, sectionH);
+            g.setColor(Color.WHITE);
+            g.drawRect(segmentX, y, sectionW, sectionH);
+        }
+
+        g.setColor(Color.WHITE);
+        g.drawString(label + ": " + charge + "/" + maxCharge, x, y - 6);
+    }
+
 // --- COLLISION LOGIC ---
     private void checkAttackHits() {
         // If Player 1 is attacking, check if hitboxes overlap Player 2
-        if (attackNum1 > 0 && isOverlapping(player2, attackP1)) {
-            player2.takeDamage(attackNum1 >= 5 ? 25 : 15); // Slashes (5-6) deal more damage
+        if (attackNum1 > 0 && isOverlapping(player2, attackP1) && !p1AttackHitRegistered) {
+            int damage = 0;
+
+            if (attackNum1 == 1 || attackNum1 == 2)
+            {
+                  damage = 25;
+            } else if (attackNum1 == 3 || attackNum1 == 4)
+            {
+                  damage = 50;
+            } else if (attackNum1 == 5 || attackNum1 == 6)
+            {
+                  damage = 200;
+            }
+
+            if (p1ComboReady) {
+                damage *= 2;
+                p1ComboReady = false;
+            } else {
+                comboCharge1 = Math.min(MAX_COMBO_CHARGE, comboCharge1 + 1);
+            }
+            player2.takeDamage(damage);
+            p1AttackHitRegistered = true;
         }
         // If Player 2 is attacking, check if hitboxes overlap Player 1
-        if (attackNum2 > 0 && isOverlapping(player1, attackP2)) {
-            player1.takeDamage(15);
+        if (attackNum2 > 0 && isOverlapping(player1, attackP2) && !p2AttackHitRegistered) {
+            int damage = 0;
+            if (attackNum2 == 1 || attackNum2 == 2)
+                  {
+                        damage = 25;
+                  } else if (attackNum2 == 3 || attackNum2 == 4)
+                  {
+                        damage = 50;
+                  } else if (attackNum2 == 5 || attackNum2 == 6)
+                  {
+                        damage = 200;
+                  }
+
+            if (p2ComboReady) {
+                damage *= 2;
+                p2ComboReady = false;
+            } else {
+                comboCharge2 = Math.min(MAX_COMBO_CHARGE, comboCharge2 + 1);
+            }
+            player1.takeDamage(damage);
+            p2AttackHitRegistered = true;
         }
     }
 
@@ -586,9 +708,9 @@ if (matchEnded) { this.repaint(); return; }
     private void restartGame() {
         try {
             java.lang.reflect.Field hp1 = Box.class.getDeclaredField("hp");
-            hp1.setAccessible(true); hp1.set(player1, 100.0);
+            hp1.setAccessible(true); hp1.set(player1, 1000.0);
             java.lang.reflect.Field hp2 = Box.class.getDeclaredField("hp");
-            hp2.setAccessible(true); hp2.set(player2, 100.0);
+            hp2.setAccessible(true); hp2.set(player2, 1000.0);
         } catch(Exception e) {}
         player1.setX(150); player1.setY(250);
         player2.setX(this.getWidth() - 650); player2.setY(250);
@@ -646,7 +768,7 @@ if (matchEnded) { this.repaint(); return; }
         } catch(Exception e) {}
         player1.setX(150); player1.setY(250);
         player2.setX(this.getWidth() - 650); player2.setY(250);
-        attackNum1 = 0; attackNum2 = 0;
+        attackNum1 = 0; attackNum2 = 0; comboCharge1 = 0; comboCharge2 = 0;
         matchEnded = false;
     }
 }

@@ -301,7 +301,38 @@ public class DrawingManager {
             }
         } else if (playerNumber == 2) 
          {
-            
+            if (attackNum == 1) 
+                {
+                    System.out.println("trest");
+                    image = blackFlashLeft;
+                    attack.setAttackHeight(400);
+                    attack.setAttackLength(750);
+                } else if (attackNum == 2)
+                {
+                    image = blackFlashRight;
+                    attack.setAttackHeight(400);
+                    attack.setAttackLength(750);
+                } else if (attackNum == 3)
+                {
+                    image = blackSlashLeft;
+                    attack.setAttackHeight(1000);
+                    attack.setAttackLength(1500);
+                } else if (attackNum == 4)
+                {
+                    image = blackSlashRight;
+                    attack.setAttackHeight(1000);
+                    attack.setAttackLength(1500);
+                } else if (attackNum == 5)
+                {
+                    image = worldSlashLeft;
+                    attack.setAttackHeight(1000);
+                    attack.setAttackLength(1500);
+                } else if (attackNum == 6)
+                {
+                    image = worldSlashRight;
+                    attack.setAttackHeight(1000);
+                    attack.setAttackLength(1500);
+                }
         }
     
             if (attackNum == 0)

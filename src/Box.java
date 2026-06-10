@@ -4,8 +4,8 @@ import java.awt.Graphics;
 
 public class Box {
     // --- HEALTH BAR SYSTEM VARIABLES ---
-    private double hp = 100.0;
-    private final double MAX_HP = 100.0;
+    private double hp = 1000.0;
+    private final double MAX_HP = 1000.0;
     private long lastHitTime = 0; // Tracks invincibility frames
     private final long INVINCIBILITY_COOLDOWN = 500; // 0.5 seconds in milliseconds
 
@@ -190,7 +190,6 @@ public class Box {
             this.hp -= amount;
             if (this.hp < 0) this.hp = 0;
             lastHitTime = currentTime; // Reset the invincibility timer
-            System.out.println("Ouch! HP reduced to: " + this.hp);
         }
     }
 }
