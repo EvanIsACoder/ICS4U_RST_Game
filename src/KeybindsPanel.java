@@ -94,7 +94,7 @@ public class KeybindsPanel extends JPanel {
             "P - Dash",
             "O - Dash Attack (25 dmg)",
             "k - Slash Attack (50 dmg)",
-            "l - Big Slash Attack (200 dmg)"
+            "l - Big Slash Attack (125 dmg)"
         };
 
         // Draw Player 1 keybinds - center aligned
@@ -103,7 +103,7 @@ public class KeybindsPanel extends JPanel {
             g2.drawString(p1Keybinds[i], textX, startY + (i * lineHeight));
         }
 
-        // Draw Player 2 keybinds - center aligned
+        // Draw Player 2 keybinds - center alignedgtgg
         for (int i = 0; i < p2Keybinds.length; i++) {
             int textX = rightColumnX - g2.getFontMetrics().stringWidth(p2Keybinds[i]) / 2;
             g2.drawString(p2Keybinds[i], textX, startY + (i * lineHeight));

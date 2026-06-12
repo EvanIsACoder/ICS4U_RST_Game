@@ -515,7 +515,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             //Big slash "l"
             if (var2 == 76 && slashCD <= 0) {
                   autoAttackCancel2 = 8;
-                  slashCD = 208;
+                  slashCD = 160;
                   playSound("hammerSlash.wav");
                   if (!player2.getFacingRight())
                   {
