@@ -80,9 +80,9 @@ public class KeybindsPanel extends JPanel {
             "W - Jump",
             "S - Cancel jump",
             "R - Dash",
-            "T - Fireball Attack",
-            "G - Fire Spin Attack",
-            "V - Fire Slash Attack"
+            "T - Fireball Attack (25 dmg)",
+            "G - Fire Spin Attack (75 dmg)",
+            "V - Fire Slash Attack (75 dmg)"
         };
 
         // Player 2 Keybinds
@@ -92,9 +92,9 @@ public class KeybindsPanel extends JPanel {
             "Up Arrow - Jump",
             "Down Arrow - Cancel jump",
             "P - Dash",
-            "O - Dash Attack",
-            "k - Slash Attack",
-            "l - Big Slash Attack"
+            "O - Dash Attack (25 dmg)",
+            "k - Slash Attack (50 dmg)",
+            "l - Big Slash Attack (200 dmg)"
         };
 
         // Draw Player 1 keybinds - center aligned

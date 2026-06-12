@@ -22,8 +22,11 @@ public class GameWindow extends JFrame {
     private Clip backgroundMusicClip;
 
     public GameWindow() {
-        this.setTitle("2-player fighting game");
+        this.setTitle("SUPER BRAWL!");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Play background music
+        playBackgroundMusic("resources/sounds/backgroundMusic.wav");
         
         // Create the card layout manager
         cardLayout = new CardLayout();
@@ -46,9 +49,6 @@ public class GameWindow extends JFrame {
         this.pack();
         this.setLocationRelativeTo((Component)null);
         this.setVisible(true);
-
-        // Play background music
-        playBackgroundMusic("resources/sounds/backgroundMusic.wav");
     }
 
     //Method for background music

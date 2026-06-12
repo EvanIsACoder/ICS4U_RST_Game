@@ -202,17 +202,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             drawHealthBar(var1, 50, 55, player1.getHp(), player1.getMaxHp(), new Color(231, 76, 60), "P1");
             drawHealthBar(var1, screenW - 400, 55, player2.getHp(), player2.getMaxHp(), new Color(135, 60, 180), "P2");
 
+            //draw cooldown counters
             int cooldownRowY = 55;
             drawCooldownCounter(var1, 430, cooldownRowY, "Fireball");
             drawCooldownCounter(var1, 485, cooldownRowY, "Fire spin");
             drawCooldownCounter(var1, 540, cooldownRowY, "Fire slash");
             drawCooldownCounter(var1, 595, cooldownRowY, "DashP1");
 
-            drawCooldownCounter(var1, screenW - 430, cooldownRowY, "Flash");
-            drawCooldownCounter(var1, screenW - 375, cooldownRowY, "Swing");
-            drawCooldownCounter(var1, screenW - 320, cooldownRowY, "Slash");
-            drawCooldownCounter(var1, screenW - 265, cooldownRowY, "DashP2");
+            drawCooldownCounter(var1, screenW - 635, cooldownRowY, "Flash");
+            drawCooldownCounter(var1, screenW - 580, cooldownRowY, "Swing");
+            drawCooldownCounter(var1, screenW - 525, cooldownRowY, "Slash");
+            drawCooldownCounter(var1, screenW - 470, cooldownRowY, "DashP2");
 
+            //draw combo bar
             int comboSectionW = 52;
             int comboSpacing = 8;
             int comboTotalWidth = MAX_COMBO_CHARGE * comboSectionW + (MAX_COMBO_CHARGE - 1) * comboSpacing;
@@ -275,6 +277,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                   }
             }
 
+            //Play movement sound
+            if (player1.getXVelocity() > 0 || player2.getXVelocity() > 0) {
+                  playSound("movement.wav");
+            }
+
             //depending on which attack is being used, it will set the correct image to be drawn
             if (attackNum1 == 1) {
                   imageNum1 = 5;
@@ -306,7 +313,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
             //moves the fireball when being used
             if (fireballCD > 0 && attackNum1 == 1) {
-            attackP1.setAttackX(attackP1.getAttackX() - 30);
+                  playSound("fireSpear.wav");
+                  attackP1.setAttackX(attackP1.getAttackX() - 30);
             } else if (fireballCD > 0 && attackNum1 == 2) {
                   attackP1.setAttackX(attackP1.getAttackX() + 30);
             }
@@ -360,7 +368,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                   this.player1.jumpCancel();
             }
             
-            if (var2 == 82 && p1DashCD <= 0) { //dash "r"
+            //Dash "r"
+            if (var2 == 82 && p1DashCD <= 0) {
+                  playSound("dash.wav");
                   if (player1.getXVelocity() > 0) {
                         player1.setX(player1.getX() + 500);
                   } else if (player1.getXVelocity() < 0) {
@@ -394,7 +404,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             //Fire spin attack "g"
             if (var2 == 71 && fireSpinCD <= 0) {
                   autoAttackCancel1 = 8;
-                  fireSpinCD = 24;
+                  fireSpinCD = 80;
+                  playSound("fireSpin.wav");
                   if (!player1.getFacingRight())
                   {
                         attackNum1 = 3;
@@ -414,7 +425,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             //Fire slash attack "v"
             if (var2 == 86 && fireSlashCD <= 0) {     
                   autoAttackCancel1 = 8;
-                  fireSlashCD = 48;
+                  fireSlashCD = 112;
+                  playSound("fireSlash.wav");
                   if (!player1.getFacingRight())
                   {
                         attackNum1 = 5;
@@ -454,6 +466,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
             //Dash "p"
             if (var2 == 80 && p2DashCD <= 0) {
+                  playSound("dash.wav");
                   if (player2.getXVelocity() > 0) {
                         player2.setX(player2.getX() + 300);
                   } else if (player2.getXVelocity() < 0) {
@@ -468,6 +481,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             if (var2 == 79 && flashCD <= 0) {
                   autoAttackCancel2 = 8;
                   flashCD = 24;
+                  playSound("blackFlash.wav");
                   if (!player2.getFacingRight())
                   {
                         attackNum2 = 1;
@@ -486,6 +500,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             if (var2 == 75 && swingCD <= 0) {
                   autoAttackCancel2 = 8;
                   swingCD = 48;
+                  playSound("blackSlash.wav");
                   if (!player2.getFacingRight())
                   {
                         attackNum2 = 3;
@@ -506,6 +521,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             if (var2 == 76 && slashCD <= 0) {
                   autoAttackCancel2 = 8;
                   slashCD = 160;
+                  playSound("hammerSlash.wav");
                   if (!player2.getFacingRight())
                   {
                         attackNum2 = 5;
@@ -772,9 +788,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         if (attackNum1 == 1 || attackNum1 == 2) {
                               calculatedDmg = 50;
                         } else if (attackNum1 == 3 || attackNum1 == 4) {
-                              calculatedDmg = 100;
+                              calculatedDmg = 150;
                         } else if (attackNum1 == 5 || attackNum1 == 6) {
-                              calculatedDmg = 200;
+                              calculatedDmg = 150;
                         }
 
                         comboCharge1 = 0; // Reset combo after use
@@ -783,9 +799,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         if (attackNum1 == 1 || attackNum1 == 2) {
                               calculatedDmg = 25;
                         } else if (attackNum1 == 3 || attackNum1 == 4) {
-                              calculatedDmg = 50;
+                              calculatedDmg = 75;
                         } else if (attackNum1 == 5 || attackNum1 == 6) {
-                              calculatedDmg = 100;
+                              calculatedDmg = 75;
                         }
 
                         comboCharge1++;
@@ -808,6 +824,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                               calculatedDmg = 100;
                         } else if (attackNum2 == 5 || attackNum2 == 6) {
                               calculatedDmg = 400;
+                              playSound("goofy-bonk.wav");
+                              //Stun play 1 when hit with ult crit
+                              player1.setXVelocity(0);
+                              player1.setYVelocity(0);
+                              fireSlashCD = 16;
+                              fireSpinCD = 16;
+                              fireballCD = 16;
                         }
                   comboCharge2 = 0; // Reset combo after use
                   } else {
@@ -823,6 +846,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         comboCharge2++;
                   }
 
+                  slashCD -= 16; //hitting a skill reduces ultimate attack cooldown by 1 second
                   player1.takeDamage(calculatedDmg);
                   triggerVisualDamage(player1.getX(), player1.getY(), calculatedDmg);
                   p1HitCooldown = 20;
