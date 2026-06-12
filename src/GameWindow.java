@@ -48,7 +48,7 @@ public class GameWindow extends JFrame {
         this.setVisible(true);
 
         // Play background music
-        playBackgroundMusic("resources/images/Sounds/backgroundMusic.wav");
+        playBackgroundMusic("resources/sounds/backgroundMusic.wav");
     }
 
     //Method for background music
@@ -61,14 +61,14 @@ public class GameWindow extends JFrame {
             }
 
             if (musicFile == null || !musicFile.exists()) {
-                URL resourceUrl = getClass().getResource("/images/Sounds/backgroundMusic.wav");
+                URL resourceUrl = getClass().getResource("/sounds/backgroundMusic.wav");
                 if (resourceUrl != null) {
                     musicFile = new File(resourceUrl.toURI());
                 }
             }
 
             if (musicFile == null || !musicFile.exists()) {
-                musicFile = new File("resources/images/Sounds/backgroundMusic.wav");
+                musicFile = new File("resources/sounds/backgroundMusic.wav");
             }
 
             if (musicFile.exists()) {
@@ -90,7 +90,7 @@ public class GameWindow extends JFrame {
         if (backgroundMusicClip != null && backgroundMusicClip.isRunning()) {
             backgroundMusicClip.stop();
         }
-        
+
         super.dispose();
     }
 
