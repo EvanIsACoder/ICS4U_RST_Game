@@ -3,26 +3,32 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Box {
-    // --- HEALTH BAR SYSTEM VARIABLES ---
+    //health bar variables
     private double hp = 1000.0;
     private final double MAX_HP = 1000.0;
     private long lastHitTime = 0; // Tracks invincibility frames
     private final long INVINCIBILITY_COOLDOWN = 500; // 0.5 seconds in milliseconds
 
+    //variables for placement on screen
     private int x = 250;
     private int y = 250;
+
+    //size variables
     private int height = 250;
     private int length = 250;
 
+    //movement variables
     private int xVelocity = 0;
     private double yVelocity = 0;
     
+    //advanced movement variables
     private final double GRAVITY = 1.3;
     private double JUMP_STRENGTH = -30.0;
     private int MOVE_SPEED = 15;
     private boolean isGrounded = false;
-    private boolean facingRight;
+    private boolean facingRight; // Is used, just not really in this file
 
+    //gets and setters for important variables needed to be accessed in other files
     public int getXVelocity() {
         return xVelocity;
     }
@@ -71,23 +77,19 @@ public class Box {
         length = newLength;
     }
 
-    public boolean getIsGrounded ()
-    {
+    public boolean getIsGrounded () {
         return isGrounded;
     }
 
-    public int getSpeed ()
-    {
+    public int getSpeed () {
         return MOVE_SPEED;
     }
 
-    public void setSpeed (int newSpeed)
-    {
+    public void setSpeed (int newSpeed) {
         MOVE_SPEED = newSpeed;
     }
 
-    public boolean getFacingRight ()
-    {
+    public boolean getFacingRight () {
         if (xVelocity > 0)
         {
             return true;
@@ -95,8 +97,7 @@ public class Box {
         return false;
     }
 
-    public void setFacingRight (boolean directionIsRight)
-    {
+    public void setFacingRight (boolean directionIsRight) {
         facingRight = directionIsRight;
     }
 
@@ -109,13 +110,11 @@ public class Box {
         y += yVelocity;
 
         // Window edge collision boundaries
-        if (x < 0)
-        {
+        if (x < 0) {
             x = 0;
         }
 
-        if (x > panelWidth - length)
-        {
+        if (x > panelWidth - length) {
             x = panelWidth - length;
         }
 
@@ -125,26 +124,25 @@ public class Box {
             y = groundY - height; 
             yVelocity = 0;             
             isGrounded = true;         
-        } else 
-        {
+        } else {
             isGrounded = false;
         }
 
         //Height limiter
-        if (y < panelHeight*0.3)
-            {
-                JUMP_STRENGTH = 0.0;
-            } else
-            {
-                JUMP_STRENGTH = -30.0;
-            }
+        if (y < panelHeight*0.3) {
+            JUMP_STRENGTH = 0.0;
+        } else {
+            JUMP_STRENGTH = -30.0;
+        }
     }
 
+    //Draws the box (backup for when the images aren't working)
     public void draw(Graphics g) {
         g.setColor(Color.RED);
         g.fillRect(x, y, length, height);
     }
 
+    //methods to manage the movement
     public void setLeftVelocity() {
         xVelocity = -MOVE_SPEED;
     }
@@ -174,7 +172,7 @@ public class Box {
             isGrounded = true;
         }
     }
-    // --- HEALTH GETTERS AND SETTERS ---
+    //getters and setters for the health system
     public double getHp() {
         return hp;
     }
@@ -188,7 +186,11 @@ public class Box {
         // Only take damage if the invincibility cooldown has passed
         if (currentTime - lastHitTime >= INVINCIBILITY_COOLDOWN) {
             this.hp -= amount;
-            if (this.hp < 0) this.hp = 0;
+
+            if (this.hp < 0) {
+                this.hp = 0;
+            }
+            
             lastHitTime = currentTime; // Reset the invincibility timer
         }
     }

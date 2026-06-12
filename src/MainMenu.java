@@ -1,5 +1,4 @@
-// Main Menu Screen. Displays title, player images and buttons for starting and instructions/keybinds.
-// Used CoPilot to help with grabbing the images. Also for helping with button functionality
+// Main Menu Screen. Displays title, player images and buttons for starting the game and instructions/keybinds.
 
 package src;
 
@@ -34,12 +33,14 @@ public class MainMenu extends JPanel {
         playButton.setBackground(new Color(50, 50, 50));
         playButton.setFocusPainted(false);
         playButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameWindow.showGamePanel();
             }
         });
+
         this.add(playButton);
 
         // Create Keybinds Button
@@ -49,15 +50,18 @@ public class MainMenu extends JPanel {
         keybindsButton.setBackground(new Color(50, 50, 50));
         keybindsButton.setFocusPainted(false);
         keybindsButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
         keybindsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gameWindow.showKeybinds();
             }
         });
+
         this.add(keybindsButton);
     }
 
+    //helps with loading the images
     private BufferedImage loadImage(String path) {
         try {
             return ImageIO.read(new File(path));
@@ -67,6 +71,7 @@ public class MainMenu extends JPanel {
         }
     }
 
+    //Draws the panel
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -76,20 +81,20 @@ public class MainMenu extends JPanel {
         int w = getWidth();
         int h = getHeight();
 
-        // Draw "Title" text - moved lower and centered above horizontal center
+        // Draw "Title" text
         g2.setFont(new Font("Arial", Font.BOLD, 100));
         g2.setColor(Color.WHITE);
         String titleText = "Super Brawl";
         int titleX = (w - g2.getFontMetrics().stringWidth(titleText)) / 2;
         g2.drawString(titleText, titleX, h / 2 - 100);
 
-        // Draw Play Button - positioned slightly above horizontal center
+        // Draw Play Button
         playButton.setBounds(w / 2 - 150, h / 2 - 40, 300, 80);
 
-        // Draw Keybinds Button - positioned below play button
+        // Draw Keybinds Button
         keybindsButton.setBounds(w / 2 - 200, h / 2 + 70, 400, 50);
 
-        // Draw Player 1 image on the left - moved closer to center
+        // Draw Player 1 image on the left
         if (player1Image != null) {
             int imageSize = 480;
             int p1ImageX = w / 4 - imageSize / 2;
@@ -100,7 +105,7 @@ public class MainMenu extends JPanel {
             g2.drawString(p1Label, p1ImageX + (imageSize - g2.getFontMetrics().stringWidth(p1Label)) / 2, h / 2 + imageSize / 2 + 50);
         }
 
-        // Draw Player 2 image on the right - moved closer to center
+        // Draw Player 2 image on the right
         if (player2Image != null) {
             int imageSize = 480;
             int p2ImageX = 3 * w / 4 - imageSize / 2;
@@ -113,6 +118,7 @@ public class MainMenu extends JPanel {
         }
     }
 
+    //Lets the panel interact with the user
     @Override
     public void addNotify() {
         super.addNotify();

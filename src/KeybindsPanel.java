@@ -1,3 +1,4 @@
+//Instructions panel for key bindings.
 package src;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class KeybindsPanel extends JPanel {
         backButton.setBackground(new Color(50, 50, 50));
         backButton.setFocusPainted(false);
         backButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -30,6 +32,7 @@ public class KeybindsPanel extends JPanel {
         this.add(backButton);
     }
 
+    //Code to draw the panel
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -50,7 +53,7 @@ public class KeybindsPanel extends JPanel {
 
         // Player 1 and Player 2 column headers centered in columns
         g2.setFont(new Font("Arial", Font.BOLD, 36));
-        g2.setColor(new Color(46, 204, 113)); // Green for Player 1
+        g2.setColor(new Color(231, 76, 60)); // Red for Player 1
         String p1Header = "PLAYER 1";
         int lineHeight = 40;
         int numKeybinds = 8;
@@ -59,7 +62,7 @@ public class KeybindsPanel extends JPanel {
         int headerY = startY - 40; // Just above the keybinds
         g2.drawString(p1Header, w / 4 - g2.getFontMetrics().stringWidth(p1Header) / 2, headerY);
 
-        g2.setColor(new Color(231, 76, 60)); // Red for Player 2
+        g2.setColor(new Color(135, 60, 180)); // Purple for Player 2
         String p2Header = "PLAYER 2";
         g2.drawString(p2Header, 3 * w / 4 - g2.getFontMetrics().stringWidth(p2Header) / 2, headerY);
 
@@ -75,7 +78,7 @@ public class KeybindsPanel extends JPanel {
             "A - Move Left",
             "D - Move Right",
             "W - Jump",
-            "S - Crouch",
+            "S - Cancel jump",
             "R - Dash",
             "T - Fireball Attack",
             "G - Fire Spin Attack",
@@ -87,11 +90,11 @@ public class KeybindsPanel extends JPanel {
             "Left Arrow - Move Left",
             "Right Arrow - Move Right",
             "Up Arrow - Jump",
-            "Down Arrow - Crouch",
+            "Down Arrow - Cancel jump",
             "P - Dash",
-            "O - Flash Attack",
-            "L - Slash Attack",
-            "K - Heavy Slash Attack"
+            "O - Dash Attack",
+            "k - Slash Attack",
+            "l - Big Slash Attack"
         };
 
         // Draw Player 1 keybinds - center aligned
@@ -106,7 +109,7 @@ public class KeybindsPanel extends JPanel {
             g2.drawString(p2Keybinds[i], textX, startY + (i * lineHeight));
         }
 
-        // Draw instructions at the bottom - moved higher and above back button
+        // Draw instructions at the bottom
         g2.setFont(new Font("Arial", Font.ITALIC, 18));
         g2.setColor(new Color(150, 150, 150));
         String instruction1 = "Both players share the same battlefield.";
@@ -117,10 +120,11 @@ public class KeybindsPanel extends JPanel {
         // Draw combo system description
         g2.setFont(new Font("Arial", Font.ITALIC, 16));
         g2.setColor(new Color(255, 215, 0)); // Gold color for combo info
-        String comboDesc = "COMBO SYSTEM: Land four consecutive hits, the next one does 200 damage!";
+        String comboDesc = "COMBO SYSTEM: Land four consecutive hits, the next one does DOUBLE damage!";
         g2.drawString(comboDesc, (w - g2.getFontMetrics().stringWidth(comboDesc)) / 2, h - 225);
     }
 
+    //Lets the panel interact with the user
     @Override
     public void addNotify() {
         super.addNotify();

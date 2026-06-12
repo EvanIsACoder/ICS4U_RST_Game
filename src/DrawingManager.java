@@ -1,3 +1,4 @@
+//Handles the image changing and drawing of the players and their attacks for the game
 package src;
 
 import java.awt.Graphics;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class DrawingManager {
+    //variables for all images
     private BufferedImage player1BaseLeft;
     private BufferedImage player1BaseRight;
     private BufferedImage player1Left;
@@ -48,6 +50,7 @@ public class DrawingManager {
 
     private BufferedImage noAttack;
 
+    //Constructor to load all images
     public DrawingManager() {
         player1BaseLeft = loadImage("resources/images/Player_1_Xiao/xiaoBaseLeft.png");
         player1BaseRight = loadImage("resources/images/Player_1_Xiao/xiaoBaseRight(1).png");
@@ -90,6 +93,7 @@ public class DrawingManager {
         noAttack = loadImage("resources/images/NoAttack.png");
     }
 
+    //Helper method to load images and handle exceptions
     private BufferedImage loadImage(String path) {
         try {
             return ImageIO.read(new File(path));
@@ -100,6 +104,7 @@ public class DrawingManager {
         }
     }
 
+    //Methods to draw specific player and attack images based on the player number and image number
     public void drawPlayer1(Graphics g, Box player, int imageNum1) {
         drawPlayer(g, player, 1, imageNum1);
     }
@@ -116,6 +121,8 @@ public class DrawingManager {
         drawAttack(g, attack, 2, attack2);
     }
 
+    //method that draws the player based on the player number and image number, 
+    //and sets the player's height and length based on the image being drawn
     public void drawPlayer(Graphics g, Box player, int playerNumber, int imageNum) {
         if (player == null) {
             return;
@@ -124,133 +131,110 @@ public class DrawingManager {
         BufferedImage image = (playerNumber == 2) ? player2BaseLeft : player1BaseRight; //Keeps the base form if no other form is needed
         
         if (playerNumber == 1) {
-            if (imageNum == 0)
-            {
+            if (imageNum == 0) {
                 image = player1BaseLeft;
                 player.setHeight(400);
                 player.setLength(500);
-            }else if (imageNum == 1) 
-            {
+            }else if (imageNum == 1) {
                 image = player1BaseRight;
                 player.setHeight(400);
                 player.setLength(500);
-            } else if (imageNum == 2) 
-            {
+            } else if (imageNum == 2) {
                 image = player1Left;
                 player.setHeight(400);
                 player.setLength(500);
-            } else if (imageNum == 3) 
-            {
+            } else if (imageNum == 3) {
                 image = player1Right;
                 player.setHeight(400);
                 player.setLength(500);
-            } else if (imageNum == 4) 
-            {
+            } else if (imageNum == 4) { //no seperate image numbers for going up left or right as this was added later on
                 if (!player.getFacingRight())
                     {
                         image = player1UpLeft;
-                    } else
-                    {
+                    } else {
                         image = player1UpRight;
                     } 
                 player.setHeight(400);
                 player.setLength(500);
-            } else if (imageNum == 5)
-            {
+            } else if (imageNum == 5) {
                 image = p1Attack1Left;
                 player.setHeight(380);
                 player.setLength(1000);
-            } else if (imageNum == 6)
-            {
+            } else if (imageNum == 6) {
                 image = p1Attack1Right;
                 player.setHeight(380);
                 player.setLength(1000);
-            } else if (imageNum == 7) 
-            {
+            } else if (imageNum == 7) {
                 image = p1Attack2Left;
                 player.setHeight(380);
                 player.setLength(1000);
-            } else if (imageNum == 8) 
-            {
+            } else if (imageNum == 8) {
                 image = p1Attack2Right;
                 player.setHeight(380);
                 player.setLength(1000);
-            } else if (imageNum == 9) 
-            {
+            } else if (imageNum == 9) {
                 image = p1Attack3Left;
                 player.setHeight(750);
                 player.setLength(750);
-            } else if (imageNum == 10) 
-            {
+            } else if (imageNum == 10) {
                 image = p1Attack3Right;
                 player.setHeight(750);
                 player.setLength(750);
             }
         } else if (playerNumber == 2) {
-            if (imageNum == 0)
+            if (imageNum == 0) {
+                image = player2BaseLeft;
+                player.setHeight(275);
+                player.setLength(100);
+            }else if (imageNum == 1) {
+                image = player2BaseRight;
+                player.setHeight(275);
+                player.setLength(100);
+            } else if (imageNum == 2) {
+                image = player2Left;
+                player.setHeight(275);
+                player.setLength(300);
+            } else if (imageNum == 3) {
+                image = player2Right;
+                player.setHeight(275);
+                player.setLength(300);
+            } else if (imageNum == 4) {
+                if (!player.getFacingRight())
                 {
-                    image = player2BaseLeft;
-                    player.setHeight(275);
-                    player.setLength(100);
-                }else if (imageNum == 1) 
-                {
-                    image = player2BaseRight;
-                    player.setHeight(275);
-                    player.setLength(100);
-                } else if (imageNum == 2) 
-                {
-                    image = player2Left;
-                    player.setHeight(275);
-                    player.setLength(300);
-                } else if (imageNum == 3) 
-                {
-                    image = player2Right;
-                    player.setHeight(275);
-                    player.setLength(300);
-                } else if (imageNum == 4) 
-                {
-                    if (!player.getFacingRight())
-                        {
-                            image = player2UpLeft;
-                        } else
-                        {
-                            image = player2UpRight;
-                        } 
+                    image = player2UpLeft;
+                } else {
+                    image = player2UpRight;
+                } 
                     player.setHeight(250);
                     player.setLength(250);
-                } else if (imageNum == 5)
-                {
-                    image = p2Attack1Left;
-                    player.setHeight(200);
-                    player.setLength(400);
-                } else if (imageNum == 6)
-                {
-                    image = p2Attack1Right;
-                    player.setHeight(200);
-                    player.setLength(400);
-                } else if (imageNum == 7) 
-                {
-                    image = p2Attack2Left;
-                    player.setHeight(200);
-                    player.setLength(500);
-                } else if (imageNum == 8) 
-                {
-                    image = p2Attack2Right;
-                    player.setHeight(200);
-                    player.setLength(500);
-                } else if (imageNum == 9) 
-                {
-                    image = p2Attack3Left;
-                    player.setHeight(250);
-                    player.setLength(250);
-                } else if (imageNum == 10) 
-                {
-                    image = p2Attack3Right;
-                    player.setHeight(250);
-                    player.setLength(250);
-                }
+            } else if (imageNum == 5) {
+                image = p2Attack1Left;
+                player.setHeight(200);
+                player.setLength(400);
+            } else if (imageNum == 6) {
+                image = p2Attack1Right;
+                player.setHeight(200);
+                player.setLength(400);
+            } else if (imageNum == 7) {
+                image = p2Attack2Left;
+                player.setHeight(200);
+                player.setLength(500);
+            } else if (imageNum == 8) {
+                image = p2Attack2Right;
+                player.setHeight(200);
+                player.setLength(500);
+            } else if (imageNum == 9) {
+                image = p2Attack3Left;
+                player.setHeight(250);
+                player.setLength(250);
+            } else if (imageNum == 10) {
+                image = p2Attack3Right;
+                player.setHeight(250);
+                player.setLength(250);
+            }
         }
 
+        //actualy draws the image, or if the image is null it draws the default box
         if (image != null) {
             g.drawImage(image, player.getX(), player.getY(), player.getLength(), player.getHeight(), null);
         } else {
@@ -258,6 +242,8 @@ public class DrawingManager {
         }
     }
 
+    //method that draws the attack based on the player number and attack number,
+    // and sets the attack's height and length based on the image being drawn.
     public void drawAttack(Graphics g, Attack attack, int playerNumber, int attackNum) {
         if (attack == null) {
             return;
@@ -266,81 +252,71 @@ public class DrawingManager {
         BufferedImage image = noAttack; //Default to no attack image
 
         
-        if (playerNumber == 1) 
-        {
-            if (attackNum == 1) 
-            {
+        if (playerNumber == 1) {
+            if (attackNum == 1) {
                 image = fireSpearLeft;
                 attack.setAttackHeight(400);
                 attack.setAttackLength(750);
-            } else if (attackNum == 2)
-            {
+            } else if (attackNum == 2) {
                 image = fireSpearRight;
                 attack.setAttackHeight(400);
                 attack.setAttackLength(750);
-            } else if (attackNum == 3)
-            {
+            } else if (attackNum == 3) {
                 image = fireSpinLeft;
                 attack.setAttackHeight(1000);
                 attack.setAttackLength(1500);
-            } else if (attackNum == 4)
-            {
+            } else if (attackNum == 4) {
                 image = fireSpinRight;
                 attack.setAttackHeight(1000);
                 attack.setAttackLength(1500);
-            } else if (attackNum == 5)
-            {
+            } else if (attackNum == 5) {
                 image = fireSlashLeft;
                 attack.setAttackHeight(1000);
                 attack.setAttackLength(1500);
-            } else if (attackNum == 6)
-            {
+            } else if (attackNum == 6) {
                 image = fireSlashRight;
                 attack.setAttackHeight(1000);
                 attack.setAttackLength(1500);
             }
         } else if (playerNumber == 2) 
          {
-            if (attackNum == 1) 
-                {
-                    image = blackFlashLeft;
-                    attack.setAttackHeight(300);
-                    attack.setAttackLength(400);
-                } else if (attackNum == 2)
-                {
-                    image = blackFlashRight;
-                    attack.setAttackHeight(300);
-                    attack.setAttackLength(400);
-                } else if (attackNum == 3)
-                {
-                    image = blackSlashLeft;
-                    attack.setAttackHeight(300);
-                    attack.setAttackLength(500);
-                } else if (attackNum == 4)
-                {
-                    image = blackSlashRight;
-                    attack.setAttackHeight(300);
-                    attack.setAttackLength(500);
-                } else if (attackNum == 5)
-                {
-                    image = worldSlashLeft;
-                    attack.setAttackHeight(700);
-                    attack.setAttackLength(700);
-                } else if (attackNum == 6)
-                {
-                    image = worldSlashRight;
-                    attack.setAttackHeight(700);
-                    attack.setAttackLength(700);
-                }
+            if (attackNum == 1) {
+                image = blackFlashLeft;
+                attack.setAttackHeight(300);
+                attack.setAttackLength(400);
+            } else if (attackNum == 2) {
+                image = blackFlashRight;
+                attack.setAttackHeight(300);
+                attack.setAttackLength(400);
+            } else if (attackNum == 3) {
+                image = blackSlashLeft;
+                attack.setAttackHeight(300);
+                attack.setAttackLength(500);
+            } else if (attackNum == 4) {
+                image = blackSlashRight;
+                attack.setAttackHeight(300);
+                attack.setAttackLength(500);
+            } else if (attackNum == 5) {
+                image = worldSlashLeft;
+                attack.setAttackHeight(700);
+                attack.setAttackLength(700);
+            } else if (attackNum == 6) {
+                image = worldSlashRight;
+                attack.setAttackHeight(700);
+                attack.setAttackLength(700);
+            }
         }
     
-            if (attackNum == 0)
-            {
-                image = noAttack;
-            }
+        //goes back to blank attack
+        if (attackNum == 0) {
+            image = noAttack;
+        }
     
+        //draws the image, or if the image is null it draws the default box
         if (image != null) {
             g.drawImage(image, attack.getAttackX(), attack.getAttackY(), attack.getAttackLength(), attack.getAttackHeight(), null);
+        } else {
+            attack.draw(g);
         }
     }
 }
