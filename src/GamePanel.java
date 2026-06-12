@@ -475,7 +475,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             //Flash/dash attack "o"
             if (var2 == 79 && flashCD <= 0) {
                   autoAttackCancel2 = 8;
-                  flashCD = 24;
+                  flashCD = 48;
                   playSound("blackFlash.wav");
                   if (!player2.getFacingRight())
                   {
@@ -515,7 +515,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             //Big slash "l"
             if (var2 == 76 && slashCD <= 0) {
                   autoAttackCancel2 = 8;
-                  slashCD = 160;
+                  slashCD = 208;
                   playSound("hammerSlash.wav");
                   if (!player2.getFacingRight())
                   {
@@ -815,6 +815,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                   if (comboCharge2 >= MAX_COMBO_CHARGE) {
                         if (attackNum2 == 1 || attackNum2 == 2) {
                               calculatedDmg = 50;
+                              flashCD -= 16; //if you hit it, it speeds up cooldown
                         } else if (attackNum2 == 3 || attackNum2 == 4) {
                               calculatedDmg = 100;
                         } else if (attackNum2 == 5 || attackNum2 == 6) {
@@ -832,6 +833,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         // Normal damage and increment combo
                         if (attackNum2 == 1 || attackNum2 == 2) {
                               calculatedDmg = 25;
+                              flashCD -= 16;
                         } else if (attackNum2 == 3 || attackNum2 == 4) {
                               calculatedDmg = 50;
                         } else if (attackNum2 == 5 || attackNum2 == 6) {
