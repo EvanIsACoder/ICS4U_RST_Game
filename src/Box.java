@@ -165,13 +165,14 @@ public class Box {
             isGrounded = false;
         }
     }
-
+    
     public void jumpCancel() {
         if (!isGrounded) {
             yVelocity = -JUMP_STRENGTH;
             isGrounded = true;
         }
     }
+
     //getters and setters for the health system
     public double getHp() {
         return hp;
@@ -181,6 +182,7 @@ public class Box {
         return MAX_HP;
     }
 
+    //manages damage
     public void takeDamage(int amount) {
         long currentTime = System.currentTimeMillis();
         // Only take damage if the invincibility cooldown has passed

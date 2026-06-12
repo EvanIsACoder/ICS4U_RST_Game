@@ -375,6 +375,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                   }
 
                   p1DashCD = 32; 
+                  p1HitCooldown = 20; // 20 frames of invulnerability during dash
             }
 
             //Fireball attack "t"
@@ -461,7 +462,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
             //Dash "p"
             if (var2 == 80 && p2DashCD <= 0) {
-                  playSound("dash.wav");
+                  playSound("dash.wav"); 
                   if (player2.getXVelocity() > 0) {
                         player2.setX(player2.getX() + 300);
                   } else if (player2.getXVelocity() < 0) {
@@ -470,6 +471,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         player2.setY(player2.getY() - 300);
                   }
                   p2DashCD = 16; 
+                  p2HitCooldown = 20; // 20 frames of invulnerability during dash
             }
 
             //Flash/dash attack "o"
