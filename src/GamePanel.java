@@ -277,11 +277,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                   }
             }
 
-            //Play movement sound
-            if (player1.getXVelocity() > 0 || player2.getXVelocity() > 0) {
-                  playSound("movement.wav");
-            }
-
             //depending on which attack is being used, it will set the correct image to be drawn
             if (attackNum1 == 1) {
                   imageNum1 = 5;
@@ -404,7 +399,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             //Fire spin attack "g"
             if (var2 == 71 && fireSpinCD <= 0) {
                   autoAttackCancel1 = 8;
-                  fireSpinCD = 80;
+                  fireSpinCD = 64;
                   playSound("fireSpin.wav");
                   if (!player1.getFacingRight())
                   {
@@ -425,7 +420,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             //Fire slash attack "v"
             if (var2 == 86 && fireSlashCD <= 0) {     
                   autoAttackCancel1 = 8;
-                  fireSlashCD = 112;
+                  fireSlashCD = 64;
                   playSound("fireSlash.wav");
                   if (!player1.getFacingRight())
                   {
@@ -823,7 +818,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         } else if (attackNum2 == 3 || attackNum2 == 4) {
                               calculatedDmg = 100;
                         } else if (attackNum2 == 5 || attackNum2 == 6) {
-                              calculatedDmg = 400;
+                              calculatedDmg = 250;
                               playSound("goofy-bonk.wav");
                               //Stun play 1 when hit with ult crit
                               player1.setXVelocity(0);
@@ -840,7 +835,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                         } else if (attackNum2 == 3 || attackNum2 == 4) {
                               calculatedDmg = 50;
                         } else if (attackNum2 == 5 || attackNum2 == 6) {
-                              calculatedDmg = 200;
+                              calculatedDmg = 125;
                         }
 
                         comboCharge2++;
